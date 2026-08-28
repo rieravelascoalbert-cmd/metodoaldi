@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sistema ARV · V1</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#17202a;--muted:#667085;--line:#e4e7ec;--accent:#173f2a;--accent2:#e9f2ed}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}
+header{background:var(--accent);color:white;padding:20px 22px;position:sticky;top:0;z-index:3}
+header .brand{font-size:22px;font-weight:800;letter-spacing:.3px}header small{opacity:.8}
+main{max-width:920px;margin:24px auto;padding:0 16px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 2px 10px #1018280a}
+h1,h2,h3{margin-top:0}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label{font-weight:650;font-size:14px;display:block;margin-bottom:6px}select,input,textarea{width:100%;padding:11px 12px;border:1px solid #d0d5dd;border-radius:10px;font:inherit;background:white}
+button{border:0;border-radius:10px;padding:11px 16px;font-weight:750;cursor:pointer}.primary{background:var(--accent);color:#fff}.secondary{background:#eef1f3;color:#17202a}.danger{background:#fff0f0;color:#a11}
+.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.option{display:block;padding:14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;cursor:pointer;background:white}
+.option:hover{border-color:#9ab3a4;background:var(--accent2)}.option input{width:auto;margin-right:9px}
+.progress{height:7px;background:#e7e9ed;border-radius:20px;overflow:hidden;margin:12px 0 20px}.bar{height:100%;background:var(--accent);transition:.25s}
+.badge{display:inline-block;background:var(--accent2);color:var(--accent);padding:5px 9px;border-radius:99px;font-size:12px;font-weight:800}
+.result{border-left:5px solid var(--accent);padding-left:15px}.score{font-size:28px;font-weight:850}.pill{padding:7px 10px;background:#f0f2f4;border-radius:99px;display:inline-block;margin:3px}
+.hidden{display:none}@media(max-width:600px){main{margin:12px auto}.card{padding:17px}}
+</style>
+</head>
+<body>
+<header><div class="brand">SISTEMA ARV · V1</div><small>Diagnóstico futbolístico basado en ventajas, contexto y comportamiento</small></header>
+<main>
+<section id="home" class="card">
+<h1>Nuevo diagnóstico</h1>
+<p class="muted">Primera versión funcional. El motor no busca describir el problema: intenta encontrar la causa que mejor explica el patrón observado.</p>
+<div class="grid">
+<div><label>Categoría</label><select id="cat"><option>S13</option><option>S14</option><option>S15</option><option>S16</option><option>Juvenil</option></select></div>
+<div><label>Momento</label><select id="moment"><option>Entrenamiento</option><option>Partido</option><option>Transición ofensiva</option><option>Transición defensiva</option><option>Ataque posicional</option><option>Finalización</option></select></div>
+</div>
+<label style="margin-top:14px">¿Qué observas?</label>
+<textarea id="obs" rows="4" placeholder="Ej.: Llegamos a tres cuartos, encontramos al hombre libre, pero la ventaja desaparece antes de finalizar."></textarea>
+<div class="actions"><button class="primary" onclick="start()">Analizar situación</button></div>
+</section>
+
+<section id="quiz" class="card hidden">
+<div><span class="badge" id="badge"></span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<h2 id="qtitle"></h2><p class="muted" id="qsub"></p>
+<div id="options"></div>
+<div class="actions"><button class="secondary" onclick="back()">Atrás</button><button class="primary" onclick="next()">Siguiente</button></div>
+</section>
+
+<section id="result" class="card hidden"></section>
+</main>
+<script>
+const bank=[
+{title:"Llegamos al último tercio pero nos cuesta finalizar", opts:[
+["No atacamos el área cuando aparece el momento adecuado","momento"],
+["No generamos una ventaja suficientemente clara antes de finalizar","ventaja"],
+["El último pase llega tarde","tiempo"],
+["Atacamos el área con pocos jugadores","ocupacion"],
+["Elegimos mal entre pase, conducción y finalización","decision"],
+["El rival defiende correctamente la zona de finalización","rival"]]},
+{title:"Encontramos al hombre libre, pero no aprovechamos la ventaja",opts:[
+["No identificamos que es el momento de acelerar","momento"],
+["El receptor controla hacia atrás en lugar de atacar","control"],
+["Los compañeros no acompañan la ventaja","ocupacion"],
+["El rival reorganiza su estructura antes del siguiente pase","rival"],
+["El poseedor tarda demasiado en pasar","tiempo"],
+["El primer control no orienta la jugada","control"]]},
+{title:"Recuperamos el balón, pero no sabemos qué hacer",opts:[
+["No identificamos si podemos atacar inmediatamente o debemos asegurar","contexto"],
+["Los jugadores reaccionan individualmente a la recuperación","estructura"],
+["No identificamos dónde está la ventaja tras recuperar","ventaja"],
+["El equipo no tiene una estructura preparada para atacar la transición","estructura"],
+["El primer pase no encuentra al compañero mejor situado","decision"],
+["El rival recupera demasiado rápido su estructura","rival"]]},
+{title:"Recuperamos y perdemos el balón inmediatamente",opts:[
+["Intentamos progresar sin tener una ventaja suficiente","ventaja"],
+["El primer pase se juega hacia una zona con demasiados rivales","decision"],
+["Los jugadores no se separan suficientemente de la zona de recuperación","ocupacion"],
+["El receptor recibe sin ventaja","ventaja"],
+["El rival presiona inmediatamente tras pérdida","rival"],
+["La ejecución técnica del primer pase es deficiente","tecnica"]]},
+{title:"Presionamos tras pérdida, pero el rival sale fácilmente",opts:[
+["Presionamos sin tener una ventaja real para recuperar","ventaja"],
+["No cerramos las líneas de pase más peligrosas","decision"],
+["Demasiados jugadores van directamente al balón","estructura"],
+["No coordinamos quién salta y quién cubre","estructura"],
+["El rival encuentra rápidamente al jugador libre","rival"],
+["Estamos demasiado lejos de la zona de pérdida","ocupacion"]]},
+{title:"Tenemos espacios entre central y lateral, pero no los atacamos",opts:[
+["No identificamos el espacio disponible","espacio"],
+["El desmarque no se coordina con la acción del poseedor","tiempo"],
+["Nadie fija al central o al lateral","fijacion"],
+["El jugador ataca demasiado pronto","tiempo"],
+["El poseedor no reconoce el momento del pase","momento"],
+["El rival consigue cerrar el intervalo","rival"]]},
+{title:"Tras recuperar, atacamos siempre hacia delante",opts:[
+["Confundimos progresar con atacar la portería inmediatamente","contexto"],
+["No identificamos el lado donde tenemos mayor ventaja","ventaja"],
+["El jugador que recupera tiene demasiada prisa","tiempo"],
+["No alejamos el balón de la zona de recuperación cuando está congestionada","espacio"],
+["Los compañeros atacan espacios demasiado pronto","tiempo"],
+["El rival nos obliga a jugar hacia delante","rival"]]}
+];
+let state={i:0, answers:[], scores:{}};
+const weights={ventaja:1.25,momento:1.2,decision:1.1,tiempo:1.05,estructura:1,ocupacion:1,espacio:1,fijacion:1,contexto:.95,control:.9,rival:.65,tecnica:.55};
+
+function start(){
+ state={i:0,answers:[],scores:{}}; document.getElementById("home").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden"); render();
+}
+function render(){
+ const q=bank[state.i]; document.getElementById("badge").textContent=`Situación ${state.i+1} / ${bank.length}`;
+ document.getElementById("bar").style.width=((state.i)/bank.length*100)+"%";
+ document.getElementById("qtitle").textContent=q.title;
+ document.getElementById("qsub").textContent="¿Cuál de estas causas explica mejor lo que estás viendo? Elige la principal.";
+ const box=document.getElementById("options"); box.innerHTML="";
+ q.opts.forEach((o,n)=>{let d=document.createElement("label");d.className="option";d.innerHTML=`<input type="radio" name="opt" value="${n}"> ${String.fromCharCode(65+n)}. ${o[0]}`;box.appendChild(d)});
+}
+function next(){
+ const r=document.querySelector('input[name=opt]:checked'); if(!r){alert("Elige una opción para continuar.");return}
+ const o=bank[state.i].opts[+r.value]; state.answers.push(o);
+ state.scores[o[1]]=(state.scores[o[1]]||0)+weights[o[1]];
+ state.i++;
+ if(state.i<bank.length) render(); else finish();
+}
+function back(){if(state.i===0)return;state.i--;state.answers.pop();render()}
+function finish(){
+ document.getElementById("quiz").classList.add("hidden");
+ const ranked=Object.entries(state.scores).sort((a,b)=>b[1]-a[1]);
+ const names={ventaja:"Generación/lectura de ventajas",momento:"Identificación del momento",decision:"Toma de decisiones",tiempo:"Timing",estructura:"Estructura y compensaciones",ocupacion:"Ocupación de espacios",espacio:"Lectura del espacio",fijacion:"Fijaciones y desmarques",contexto:"Lectura del contexto",control:"Orientación técnica",rival:"Respuesta del rival",tecnica:"Ejecución técnica"};
+ const top=ranked.slice(0,3);
+ const rec={
+  ventaja:"Trabajar la identificación de quién tiene ventaja, dónde está y si conviene aumentarla o convertirla.",
+  momento:"Trabajar el reconocimiento del instante en que aparece una ventaja y la aceleración inmediata.",
+  decision:"Trabajar alternativas y criterios: qué rival atraer, quién es libre y qué opción tiene mejor relación riesgo-beneficio.",
+  tiempo:"Trabajar sincronización entre pase, control, desmarque y cambio de ritmo.",
+  estructura:"Trabajar compensaciones: si un jugador abandona una zona, otro debe ocuparla.",
+  ocupacion:"Trabajar alturas, carriles y distancias para que la ventaja tenga continuidad.",
+  espacio:"Trabajar lectura de espacios disponibles y cómo atacar el intervalo adecuado.",
+  fijacion:"Trabajar fijar antes de liberar, y coordinar fijación con el movimiento del tercer hombre.",
+  contexto:"Trabajar la decisión según marcador, tiempo, ritmo y necesidad competitiva.",
+  control:"Trabajar orientación del primer control para atacar la siguiente acción.",
+  rival:"Trabajar lectura de la respuesta defensiva y adaptación posterior.",
+  tecnica:"Trabajar la ejecución específica sin confundir un fallo técnico con un error de decisión."
+ };
+ document.getElementById("result").classList.remove("hidden");
+ const primary=top[0]?.[0]||"ventaja";
+ const tasks={
+  ventaja:["Juego de posición 6×6 + 3 comodines","Regla: cada vez que se supera una línea, el equipo debe identificar y atacar la siguiente ventaja antes de volver a conservar.","Observa si reconocen quién está libre, si aceleran cuando aparece la ventaja y si vuelven a generarla cuando desaparece."],
+  momento:["Juego de posición con zonas de aceleración","Regla: cuando aparece una ventaja clara por delante, la siguiente acción debe intentar aprovecharla; si no existe, conservar y volver a generar.","Observa el tiempo entre aparición de la ventaja y acción, y si el jugador distingue entre una ventaja real y una falsa."],
+  decision:["Posesión 7×7 con comodines y doble puntuación por progresión","Regla: puntúa más la acción que encuentra al compañero con mayor ventaja que la posesión por sí misma.","Observa alternativas, riesgo-beneficio y si el poseedor elige al compañero que puede continuar la ventaja."],
+  tiempo:["Juego reducido 5×5 + 3 comodines con ventanas de aceleración","Regla: tras superar una línea, la siguiente acción debe producir una nueva ventaja o finalizar.","Observa sincronización entre pase, control, desmarque y cambio de ritmo."],
+  estructura:["Juego de posición con rotaciones libres y compensaciones obligatorias","Regla: si un jugador abandona una zona, otro debe ocuparla antes de que el balón avance.","Observa si existe caos controlado y si todos los roles quedan cubiertos."],
+  ocupacion:["Juego de posición con carriles y zonas de profundidad","Regla: el equipo debe mantener amplitud, profundidad y presencia interior aunque cambien posiciones.","Observa distancias, alturas y compensaciones."],
+  espacio:["Juego reducido con zonas objetivo entre líneas","Regla: puntúa atacar el intervalo adecuado, no simplemente entrar en la zona.","Observa quién interpreta el espacio y cuándo lo ataca."],
+  fijacion:["3×2 en banda + tercer hombre","Regla: antes de liberar al compañero, uno debe fijar al defensor y provocar su decisión.","Observa si la fijación ocurre en el momento adecuado y si alguien compensa el espacio abandonado."],
+  contexto:["Juego condicionado por marcador y tiempo","Regla: cambia la puntuación según necesidad de ganar, empatar o controlar el ritmo.","Observa si la decisión cambia con el contexto competitivo."],
+  control:["Juego reducido con orientación obligatoria del primer control","Regla: el primer control debe preparar la siguiente ventaja siempre que la presión lo permita.","Observa orientación y lectura antes de recibir."],
+  rival:["Juego de posición con respuestas defensivas variables","Regla: la solución debe cambiar según dónde salte el rival.","Observa si los jugadores leen la reacción rival y adaptan el comportamiento."],
+  tecnica:["Juego reducido con finalización tras ventaja","Regla: la técnica se evalúa dentro de una decisión real, no aislada.","Observa si el error es técnico o si la decisión previa ya era incorrecta."]
+ };
+ const t=tasks[primary]||tasks.ventaja;
+ document.getElementById("result").innerHTML=`<span class="badge">DIAGNÓSTICO ARV</span><h2>Hipótesis prioritarias</h2>
+ <p class="muted">Categoría: ${document.getElementById("cat").value} · Contexto: ${document.getElementById("moment").value}</p>
+ <div class="result">${top.map((x,i)=>`<h3>${i+1}. ${names[x[0]]}</h3><p>${rec[x[0]]}</p>`).join("")}</div>
+ <h3 style="margin-top:22px">Lectura del caso</h3><p>El motor prioriza primero las causas relacionadas con <b>ventaja, momento y decisión</b> antes que atribuir el problema a ejecución técnica. La hipótesis debe contrastarse en el siguiente entrenamiento.</p>
+ <h3 style="margin-top:22px">🎯 Objetivo prioritario</h3>
+ <div class="result"><h3>${rec[primary]}</h3>
+ <p><b>Comportamiento esperado:</b> el jugador debe reconocer la información relevante, elegir la solución que mejor conserva o aumenta la ventaja y actuar antes de que el rival la neutralice.</p></div>
+ <h3 style="margin-top:22px">🏋️ Tarea propuesta</h3>
+ <div class="result"><h3>${t[0]}</h3><p><b>Condicionante:</b> ${t[1]}</p><p><b>Qué observar:</b> ${t[2]}</p></div>
+ <h3 style="margin-top:22px">🔄 Criterio de progreso</h3>
+ <p>Progresa cuando el comportamiento aparece de forma repetida sin que el entrenador tenga que dar la solución. Si falla, pregunta qué información vio el jugador y qué alternativa consideró antes de corregir.</p>
+ <h3>Respuestas seleccionadas</h3>${state.answers.map((x,i)=>`<div class="pill">${i+1}. ${x[0]}</div>`).join("")}
+ <div class="actions"><button class="secondary" onclick="location.reload()">Nuevo diagnóstico</button></div>`;
+}
+</script>
+</body>
+</html>
