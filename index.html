@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARV · Sistema de Metodología V10 · Biblioteca táctica</title>
+<style>
+:root{--g:#0d4f35;--g2:#176b49;--mint:#e8f5ef;--bg:#f4f7f5;--t:#173027;--m:#6b7b74;--w:#fff;--l:#dce5e0;--r:18px;--sh:0 10px 30px rgba(17,48,38,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--t)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.top{height:70px;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:30}.brand{font-weight:900;letter-spacing:1px}.brand small{display:block;font-size:10px;letter-spacing:1.5px;opacity:.7}.top button{border:1px solid #ffffff35;background:#ffffff12;color:#fff;border-radius:10px;padding:9px 13px}
+.layout{display:grid;grid-template-columns:235px 1fr;min-height:calc(100vh - 70px)}aside{background:#fff;border-right:1px solid var(--l);padding:20px 14px}.nav{display:flex;flex-direction:column;gap:5px}.nav button{border:0;background:transparent;text-align:left;padding:12px 14px;border-radius:11px;color:#486058;font-weight:800}.nav button.active,.nav button:hover{background:var(--mint);color:var(--g)}
+main{width:100%;max-width:1500px;margin:auto;padding:28px}.page{display:none}.page.active{display:block}.hero{background:linear-gradient(135deg,#0d4f35,#1d7450);color:#fff;border-radius:24px;padding:30px;margin-bottom:20px;box-shadow:var(--sh)}.hero h1{margin:0 0 8px;font-size:30px}.hero p{margin:0;max-width:900px;line-height:1.5;opacity:.84}.ey{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;font-weight:900;color:var(--g2);margin-bottom:7px}.hero .ey{color:#b9e8d0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.card{background:#fff;border:1px solid var(--l);border-radius:var(--r);padding:19px;box-shadow:0 5px 18px #14322808}.card h2,.card h3{margin:0 0 9px}.muted{color:var(--m);line-height:1.5}.stat{font-size:29px;font-weight:900}.pill{display:inline-flex;background:var(--mint);color:var(--g);border-radius:99px;padding:5px 9px;font-size:11px;font-weight:900}.btn{border:0;border-radius:10px;background:var(--g);color:#fff;padding:10px 14px;font-weight:850}.btn.secondary{background:#edf3f0;color:var(--g)}.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+label{display:block;font-size:13px;font-weight:850;margin:13px 0 6px}select,input,textarea{width:100%;padding:11px;border:1px solid var(--l);border-radius:11px;background:#fff;color:var(--t);outline:none}textarea{min-height:92px}.fieldgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}.result{margin-top:15px;background:#f7faf8;border:1px dashed #b8cec2;border-radius:14px;padding:15px;line-height:1.5}
+.list{list-style:none;margin:0;padding:0}.list li{padding:9px 0;border-bottom:1px solid var(--l);line-height:1.45}.list li:last-child{border-bottom:0}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-bottom:15px}.exercise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.exercise{overflow:hidden;padding:0}.diagram{height:180px;background:#dff0e5;border-bottom:1px solid var(--l);display:flex;align-items:center;justify-content:center}.diagram svg{width:100%;height:100%}.exbody{padding:16px}.tag{font-size:10px;font-weight:900;letter-spacing:.7px;color:var(--g2)}.exercise p{font-size:13px;color:#53645d;line-height:1.45}.footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.session-item{display:grid;grid-template-columns:72px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--l)}.time{font-weight:900;color:var(--g)}
+.modal{display:none;position:fixed;inset:0;background:#10251c99;z-index:80;padding:25px;overflow:auto}.modal.open{display:flex;align-items:center;justify-content:center}.modalbox{background:#fff;border-radius:22px;max-width:1050px;width:100%;box-shadow:var(--sh);overflow:hidden}.modalhead{display:flex;justify-content:space-between;gap:15px;padding:18px 20px;border-bottom:1px solid var(--l)}.close{border:0;background:#edf3f0;color:var(--g);border-radius:9px;width:38px;height:38px;font-size:20px}.detail{display:grid;grid-template-columns:1.05fr .95fr}.bigdiagram{background:#dff0e5;min-height:390px;padding:18px}.bigdiagram svg{width:100%;height:100%;min-height:350px}.details{padding:20px}.detailblock{margin:0 0 17px}.detailblock strong{display:block;margin-bottom:5px}.toast{display:none;position:fixed;right:20px;bottom:20px;background:#183c2e;color:#fff;padding:12px 16px;border-radius:11px;z-index:100;box-shadow:var(--sh)}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}aside{position:sticky;top:70px;z-index:20;padding:8px;border-right:0;border-bottom:1px solid var(--l)}.nav{flex-direction:row;overflow:auto}.nav button{white-space:nowrap}.grid,.grid2,.exercise-grid{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.detail{grid-template-columns:1fr}main{padding:17px}}
+@media(max-width:600px){.filters,.fieldgrid{grid-template-columns:1fr}.hero{padding:22px}.hero h1{font-size:25px}}
+
+/* V8 · Ficha de ejercicio */
+.exercise{transition:.18s transform,.18s box-shadow}
+.exercise:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(17,48,38,.12)}
+.exercise .diagram{height:205px}
+.detailpage{display:none}
+.detailpage.active{display:block}
+.detail-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
+.backbtn{border:0;background:transparent;color:var(--g);font-weight:850;padding:7px 0}
+.breadcrumb{font-size:12px;color:#74827d;margin-bottom:10px}
+.exercise-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px}
+.exercise-side,.exercise-main,.info-card{background:#fff;border:1px solid var(--l);border-radius:18px;box-shadow:0 5px 18px #14322808}
+.exercise-side{padding:18px;align-self:start;position:sticky;top:88px}
+.exercise-side h2{font-size:22px;line-height:1.12;margin:5px 0 12px}
+.exercise-side .meta{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px}
+.exercise-side .side-section{border-top:1px solid var(--l);padding-top:14px;margin-top:14px}
+.exercise-side .side-section strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:#718079;margin-bottom:5px}
+.exercise-main{overflow:hidden}
+.exercise-tabs{display:flex;gap:22px;border-bottom:1px solid var(--l);padding:0 20px;overflow:auto}
+.exercise-tabs button{border:0;background:transparent;padding:15px 2px 12px;color:#687771;font-size:12px;font-weight:900;white-space:nowrap;border-bottom:2px solid transparent}
+.exercise-tabs button.active{color:var(--g);border-bottom-color:var(--g)}
+.exercise-visual{padding:18px;background:#f0f5f2}
+.exercise-visual .bigdiagram{background:#dff0e5;border:1px solid #d3e2d9;border-radius:15px;min-height:440px;padding:12px}
+.exercise-visual .bigdiagram svg{min-height:410px}
+.visual-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.exercise-copy{padding:22px}
+.exercise-copy h1{font-size:28px;line-height:1.12;margin:0 0 8px}
+.lead{font-size:15px;line-height:1.65;color:#52635c;max-width:920px}
+.explanation{background:#f7faf8;border:1px solid var(--l);border-radius:14px;padding:16px;margin:18px 0}
+.explanation strong{display:block;margin-bottom:7px;color:var(--g)}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.info-card{padding:17px;box-shadow:none}
+.info-card h3{font-size:14px;margin:0 0 8px}
+.info-card p,.info-card li{font-size:13px;line-height:1.6;color:#52635c}
+.info-card ul{padding-left:18px;margin:0}
+.info-card.full{grid-column:1/-1}
+.key-list{display:grid;gap:9px}
+.key-item{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.5;color:#52635c}
+.key-item:before{content:"✓";display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--mint);color:var(--g);font-weight:900;flex:none}
+.sequence{display:grid;gap:9px}
+.step{display:grid;grid-template-columns:28px 1fr;gap:9px;align-items:start}
+.step .n{width:28px;height:28px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900}
+.step p{margin:2px 0 0;font-size:13px;line-height:1.55;color:#52635c}
+@media(max-width:900px){.exercise-layout{grid-template-columns:1fr}.exercise-side{position:static}.detail-grid{grid-template-columns:1fr}.info-card.full{grid-column:auto}}
+
+
+/* =========================
+   ARV V9 · visual refresh
+   Clean, energetic, premium
+   ========================= */
+:root{
+  --g:#0b5b3e;
+  --g2:#13835a;
+  --g3:#21a36f;
+  --mint:#e7f7ef;
+  --mint2:#d8f1e5;
+  --lime:#dff36b;
+  --bg:#f3f6f2;
+  --bg2:#eef5f0;
+  --t:#143229;
+  --m:#66766f;
+  --w:#fff;
+  --l:#d9e5de;
+  --r:20px;
+  --sh:0 12px 35px rgba(12,62,43,.09);
+}
+body{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(33,163,111,.08),transparent 27%),
+    radial-gradient(circle at 94% 8%,rgba(223,243,107,.10),transparent 22%),
+    var(--bg);
+}
+.top{
+  height:76px;
+  background:linear-gradient(120deg,#083d2b 0%,#0b5b3e 52%,#11744f 100%);
+  box-shadow:0 5px 24px rgba(6,48,33,.18);
+}
+.brand{font-size:17px;letter-spacing:1.4px}
+.brand small{letter-spacing:2px}
+.top button{
+  border-color:#ffffff45;
+  background:#ffffff16;
+  backdrop-filter:blur(8px);
+  border-radius:12px;
+}
+.layout{grid-template-columns:245px 1fr}
+aside{
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(16px);
+}
+.nav button{
+  transition:.18s ease;
+  border:1px solid transparent;
+}
+.nav button.active,.nav button:hover{
+  background:linear-gradient(90deg,var(--mint),#f5fbf7);
+  border-color:#cde8da;
+  box-shadow:0 5px 14px rgba(12,91,62,.07);
+}
+main{padding:32px;max-width:1540px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 90% 15%,rgba(223,243,107,.28),transparent 20%),
+    radial-gradient(circle at 72% 110%,rgba(33,163,111,.35),transparent 30%),
+    linear-gradient(135deg,#08452f,#0c6b49 58%,#139064);
+  border-radius:28px;
+  padding:34px 36px;
+  box-shadow:0 18px 42px rgba(10,79,52,.16);
+}
+.hero:after{
+  content:"ARV";
+  position:absolute;
+  right:30px;
+  bottom:-42px;
+  font-size:150px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-10px;
+  color:#ffffff0d;
+  pointer-events:none;
+}
+.hero h1{font-size:34px;letter-spacing:-.7px}
+.hero p{max-width:980px;font-size:14px}
+.ey{letter-spacing:1.7px}
+.card{
+  border-radius:20px;
+  border-color:#d8e4dd;
+  box-shadow:0 7px 23px rgba(18,53,41,.065);
+}
+.card:hover{box-shadow:0 13px 32px rgba(18,53,41,.11)}
+.pill{
+  background:var(--mint);
+  border:1px solid #cce9d9;
+}
+.btn{
+  background:linear-gradient(135deg,#0b5b3e,#13835a);
+  box-shadow:0 6px 15px rgba(11,91,62,.16);
+}
+.btn.secondary{
+  background:#f1f6f3;
+  border:1px solid #d9e6df;
+  box-shadow:none;
+}
+.btn.secondary:hover{background:var(--mint)}
+.filters{
+  display:grid;
+  grid-template-columns:minmax(230px,1.5fr) repeat(3,minmax(150px,.6fr));
+  gap:10px;
+  margin:18px 0 22px;
+}
+.filters input,.filters select{
+  border-radius:13px;
+  border-color:#d6e2db;
+  box-shadow:0 4px 12px rgba(20,50,41,.03);
+}
+.exercise-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+.exercise{
+  padding:0;
+  overflow:hidden;
+  cursor:pointer;
+  position:relative;
+}
+.exercise .diagram{
+  height:225px;
+  padding:10px;
+  background:linear-gradient(135deg,#e7f3ec,#d9eee3);
+}
+.exercise .diagram svg{
+  border-radius:14px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);
+}
+.exercise .exbody{padding:18px 18px 17px}
+.exercise .tag{
+  color:var(--g2);
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.exercise h3{
+  font-size:17px;
+  line-height:1.18;
+  letter-spacing:-.2px;
+  margin:7px 0 7px;
+}
+.exercise p{
+  min-height:48px;
+  color:#60716a;
+  line-height:1.48;
+  font-size:12.5px;
+}
+.exercise .footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:13px;
+}
+.exercise .footer .btn{font-size:11px;padding:9px 11px}
+.exercise:before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--g3),var(--lime));
+  opacity:0;
+  transition:.18s;
+}
+.exercise:hover:before{opacity:1}
+
+/* Detail view */
+.detail-top{
+  padding-bottom:4px;
+}
+.backbtn{
+  color:var(--g);
+  border-radius:10px;
+  padding:8px 11px;
+}
+.backbtn:hover{background:var(--mint)}
+.breadcrumb{
+  background:#e8f2ed;
+  border:1px solid #d4e5dc;
+  display:inline-flex;
+  padding:7px 11px;
+  border-radius:999px;
+  color:#587067;
+}
+.exercise-layout{
+  grid-template-columns:275px minmax(0,1fr);
+  gap:20px;
+}
+.exercise-side{
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(223,243,107,.28),transparent 26%),
+    linear-gradient(180deg,#ffffff,#f8fbf9);
+  box-shadow:0 10px 28px rgba(14,56,40,.08);
+}
+.exercise-side h2{
+  font-size:24px;
+  letter-spacing:-.5px;
+}
+.exercise-side .meta .pill:nth-child(2){background:#f1eefb;color:#65548f;border-color:#e0d8f0}
+.exercise-side .meta .pill:nth-child(3){background:#fff6df;color:#886716;border-color:#efdfad}
+.exercise-main{
+  border-radius:22px;
+  box-shadow:0 10px 28px rgba(14,56,40,.08);
+}
+.exercise-tabs{
+  background:#fff;
+}
+.exercise-tabs button{
+  padding:16px 2px 13px;
+}
+.exercise-visual{
+  padding:20px;
+  background:
+    radial-gradient(circle at 8% 10%,rgba(33,163,111,.08),transparent 22%),
+    #edf5f0;
+}
+.exercise-visual .bigdiagram{
+  min-height:475px;
+  background:linear-gradient(145deg,#e3f2e8,#d8ece0);
+  border-color:#cddfd5;
+  border-radius:18px;
+  padding:14px;
+  box-shadow:inset 0 0 35px rgba(15,86,57,.045);
+}
+.exercise-visual .bigdiagram svg{min-height:445px}
+.exercise-copy{padding:26px}
+.exercise-copy h1{
+  font-size:31px;
+  letter-spacing:-.7px;
+}
+.lead{font-size:14px;line-height:1.72}
+.explanation{
+  background:linear-gradient(135deg,#f0faf5,#fbfdfb);
+  border-color:#d5e9dd;
+  box-shadow:0 6px 18px rgba(13,79,53,.04);
+}
+.info-card{
+  border-radius:17px;
+  border-color:#dbe7e0;
+  background:linear-gradient(180deg,#fff,#fcfefd);
+}
+.info-card h3{color:#1b4034}
+.key-item:before{
+  background:linear-gradient(135deg,#dff5e8,#c9edd9);
+}
+.step .n{
+  background:linear-gradient(135deg,#0b5b3e,#19a16d);
+  box-shadow:0 4px 9px rgba(11,91,62,.18);
+}
+
+/* Make home/dashboard cards feel less corporate and more ARV */
+.stat{
+  background:linear-gradient(135deg,#0b5b3e,#159060);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+@media(max-width:1100px){
+  .exercise-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .filters{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  main{padding:18px}
+  .hero{padding:26px 23px}
+  .hero h1{font-size:27px}
+  .exercise-grid{grid-template-columns:1fr}
+  .filters{grid-template-columns:1fr}
+}
+
+
+/* V10 — navegación lateral vertical, cómoda y persistente */
+.layout{grid-template-columns:245px minmax(0,1fr)!important;align-items:stretch!important}
+aside{width:245px!important;min-width:245px!important;position:sticky!important;top:76px!important;height:calc(100vh - 76px)!important;overflow-y:auto!important;overflow-x:hidden!important;align-self:start!important;box-sizing:border-box!important;padding:18px 12px!important;z-index:20}
+.nav{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:6px!important;width:100%!important}
+.nav button{width:100%!important;min-height:44px!important;flex:0 0 auto!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:11px!important;text-align:left!important;white-space:nowrap!important;border-radius:12px!important;padding:11px 13px!important;box-sizing:border-box!important}
+.nav button span{overflow:hidden;text-overflow:ellipsis} main{min-width:0}
+@media(max-width:800px){.layout{grid-template-columns:1fr!important}aside{position:sticky!important;top:76px!important;width:100%!important;min-width:0!important;height:auto!important;max-height:none!important;padding:9px 10px!important;overflow:hidden!important}.nav{flex-direction:row!important;align-items:center!important;overflow-x:auto!important;overflow-y:hidden!important}.nav button{width:auto!important;min-width:max-content!important;flex:0 0 auto!important}}
+
+/* V11 · gráficos tácticos más precisos */
+.exercise .diagram{background:linear-gradient(135deg,#e5f3ea,#d8ece0)!important}
+.exercise-visual .bigdiagram{background:linear-gradient(145deg,#e2f2e8,#d5eade)!important}
+.exercise-visual .bigdiagram svg{max-height:555px}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">ARV <small>SISTEMA DE METODOLOGÍA · V5</small></div><button onclick="location.reload()">Reiniciar</button></header>
+<div class="layout">
+<aside><nav class="nav">
+<button class="active" data-page="inicio">Inicio</button>
+<button data-page="diagnostico">🧠 Diagnóstico</button>
+<button data-page="ejercicios">⚽ Ejercicios</button>
+<button data-page="sesion">🏋️ Sesión</button>
+<button data-page="modelo">◈ Modelo</button>
+</nav></aside>
+<main>
+
+<section id="inicio" class="page active">
+<div class="hero"><div class="ey">V5 · MOTOR ARV</div><h1>Diagnosticar → entender → entrenar → comprobar.</h1><p>Una biblioteca viva de tareas para enseñar a los jugadores a interpretar el juego: encontrar ventajas, acelerar cuando aparecen, atraer, liberar, cambiar de lado y reaccionar tras pérdida.</p></div>
+<div class="grid">
+<div class="card"><div class="ey">Problemas</div><div class="stat">16</div><p class="muted">Situaciones de partido con hipótesis y prioridades de intervención.</p><button class="btn" onclick="go('diagnostico')">Diagnosticar</button></div>
+<div class="card"><div class="ey">Biblioteca</div><div class="stat" id="count">36</div><p class="muted">Ejercicios con gráfico táctico, organización, reglas y variantes.</p><button class="btn secondary" onclick="go('ejercicios')">Explorar</button></div>
+<div class="card"><div class="ey">Sesión</div><div class="stat">3–4</div><p class="muted">Tareas principales intensas, con calentamiento siempre con balón.</p><button class="btn secondary" onclick="go('sesion')">Crear sesión</button></div>
+</div>
+<div class="grid2" style="margin-top:18px">
+<div class="card"><h2>Principios no negociables</h2><ul class="list">
+<li><strong>Error:</strong> forma parte del proceso.</li><li><strong>Utilidad:</strong> todos pueden ayudar si quieren y trabajan.</li><li><strong>Sin balón:</strong> casi tan importante como con balón.</li><li><strong>Equipo:</strong> solidaridad y compensación.</li><li><strong>Ventaja:</strong> descubrir dónde recibir con ventaja.</li>
+</ul></div>
+<div class="card"><h2>La idea de juego</h2><p>Queremos que el rival piense que <strong>siempre encontramos al hombre libre</strong> y que, después de perder, <strong>no encuentra una salida clara</strong>.</p><div class="result"><strong>Libertad con responsabilidad:</strong> romper una posición puede generar ventaja, pero alguien debe fijar o compensar el espacio abandonado.</div></div>
+</div>
+</section>
+
+<section id="diagnostico" class="page">
+<div class="hero"><div class="ey">MOTOR DE DIAGNÓSTICO</div><h1>¿Qué problema quieres analizar?</h1><p>La plataforma propone una hipótesis inicial. Tú la corriges y esa corrección es la que debe acabar alimentando la metodología.</p></div>
+<div class="grid2">
+<div class="card">
+<div class="fieldgrid"><div><label>Categoría</label><select id="cat"><option>S13</option><option>S14</option><option>S15</option><option>S16</option><option>Juvenil</option></select></div><div><label>Momento</label><select id="mom"><option>Construcción</option><option>Progresión</option><option>Último tercio</option><option>Defensa organizada</option><option>Transición ataque-defensa</option><option>Transición defensa-ataque</option></select></div></div>
+<label>Problema observado</label><select id="problem" onchange="diagnose()">
+<option value="slow">Aparece una ventaja y no aceleramos antes de que desaparezca</option>
+<option value="switch">Recuperamos y seguimos jugando en la zona congestionada</option>
+<option value="free">No encontramos al hombre libre</option>
+<option value="third">Tenemos pase, pero no encontramos el tercer hombre</option>
+<option value="build">No superamos la primera línea de presión</option>
+<option value="back">Recibimos de espaldas y perdemos demasiados balones</option>
+<option value="fix">Conducimos pero no fijamos a ningún rival</option>
+<option value="space">Abandonamos posiciones sin compensar</option>
+<option value="final">Llegamos a campo rival pero nos falta profundidad</option>
+<option value="width">Tenemos amplitud pero no conseguimos atacar el lado débil</option>
+<option value="loss">Tras pérdida tardamos en reaccionar</option>
+<option value="counter">Tras pérdida nos eliminan con un pase</option>
+<option value="press">Presionamos sin estar preparados para la segunda acción</option>
+<option value="defend">Defendemos demasiado atrás y no podemos salir</option>
+<option value="tempo">Dominamos pero no controlamos el ritmo</option>
+<option value="personality">Los jugadores esperan soluciones del entrenador en vez de interpretar</option>
+</select>
+<label>Observaciones del entrenador</label><textarea id="obs" placeholder="Escribe qué ocurrió, dónde, quién intervino y qué hizo el rival..."></textarea>
+<button class="btn" onclick="diagnose()">Analizar</button><div id="diag" class="result"></div>
+</div>
+<div class="card"><h2>Preguntas ARV</h2><ul class="list">
+<li>¿Dónde estaba la ventaja y cuánto duró?</li><li>¿Qué jugador podía recibir con ventaja?</li><li>¿Qué reacción del rival provocamos?</li><li>¿Podíamos atraer un rival antes de progresar?</li><li>Si rompemos estructura, ¿quién compensa?</li><li>Después de recuperar, ¿dónde hay menos rivales?</li><li>Tras pérdida, ¿estamos cerca y estructurados para presionar?</li><li>¿El jugador está resolviendo o ejecutando una orden?</li>
+</ul></div>
+</div>
+</section>
+
+<section id="ejercicios" class="page">
+<div class="hero"><div class="ey">BIBLIOTECA ARV</div><h1>Ejercicios con explicación y gráfico táctico</h1><p>La ficha de cada tarea está pensada para poder montarla y entrenarla sin tener que interpretar un dibujo ambiguo: contexto, objetivo, organización, reglas, secuencia, claves y progresiones.</p></div>
+<div class="filters"><input id="search" placeholder="Buscar ejercicio..." oninput="renderExercises()"><select id="filterTag" onchange="renderExercises()"><option value="">Todos los principios</option></select><select id="filterAge" onchange="renderExercises()"><option value="">Todas las edades</option><option>S13</option><option>S14</option><option>S15</option><option>S16</option><option>Juvenil</option></select><select id="filterIntensity" onchange="renderExercises()"><option value="">Toda intensidad</option><option>Media</option><option>Alta</option><option>Muy alta</option></select></div>
+<div class="exercise-grid" id="exerciseGrid"></div>
+</section>
+
+<section id="exerciseDetail" class="detailpage">
+<div class="detail-top"><button class="backbtn" onclick="go('ejercicios')">← Volver a la biblioteca</button><div class="btn-row" style="margin:0"><button class="btn secondary" onclick="toast('Gráfico preparado para descargar')">↓ Descargar gráfico</button><button class="btn secondary" onclick="toast('Modo pantalla completa')">⛶ Pantalla completa</button></div></div>
+<div class="breadcrumb" id="dBread"></div>
+<div class="exercise-layout">
+<aside class="exercise-side" id="dSide"></aside>
+<div class="exercise-main">
+<div class="exercise-tabs"><button class="active" onclick="detailTab(this,'overview')">GRÁFICO</button><button onclick="detailTab(this,'description')">DESCRIPCIÓN</button><button onclick="detailTab(this,'rules')">REGLAS</button><button onclick="detailTab(this,'keys')">CLAVES DEL ENTRENADOR</button><button onclick="detailTab(this,'progress')">PROGRESIONES</button></div>
+<div class="exercise-visual" id="dVisual"></div>
+<div class="exercise-copy" id="dCopy"></div>
+</div></div>
+</section>
+
+<section id="sesion" class="page">
+<div class="hero"><div class="ey">GENERADOR</div><h1>Una sesión construida desde el problema.</h1><p>El calentamiento es siempre con balón. La propuesta usa 3–4 tareas principales y prioriza intensidad y toma de decisiones parecidas al partido.</p></div>
+<div class="grid2"><div class="card"><h2>Configuración</h2><label>Objetivo</label><select id="goal" onchange="buildSession()"><option value="adv">Acelerar la ventaja</option><option value="switch">Recuperar y cambiar de lado</option><option value="free">Hombre libre y tercer hombre</option><option value="build">Superar presión</option><option value="loss">Presión tras pérdida</option><option value="structure">Caos ordenado y compensaciones</option></select><label>Complejidad</label><select id="comp" onchange="buildSession()"><option>Progresiva</option><option>Alta desde el inicio</option></select><div class="result"><strong>Criterio:</strong> simple → complejo es una buena referencia, pero no una obligación. Si queremos imitar el desgaste y la presión decisional del partido, podemos entrar pronto en tareas muy representativas.</div></div><div class="card"><h2>Propuesta</h2><div id="plan"></div></div></div>
+</section>
+
+<section id="modelo" class="page">
+<div class="hero"><div class="ey">MODELO DE JUEGO</div><h1>Principios que queremos que el jugador interprete.</h1><p>La metodología no busca jugadores que repitan movimientos, sino jugadores capaces de reconocer información y actuar.</p></div>
+<div class="grid">
+<div class="card"><h3>⚡ Acelerar</h3><p>Cuando aparece una ventaja clara, ejecutar rápido antes de que el rival vuelva a cerrar.</p></div>
+<div class="card"><h3>🧲 Atraer</h3><p>Provocar que el rival salga de su posición para liberar a otro jugador.</p></div>
+<div class="card"><h3>👤 Hombre libre</h3><p>Reconocer quién tiene más ventaja y encontrarlo directo o mediante un intermediario.</p></div>
+<div class="card"><h3>🔺 Tercer hombre</h3><p>Usar un jugador de apoyo para superar una línea cuando el receptor final no está disponible directamente.</p></div>
+<div class="card"><h3>↔️ Cambiar lado</h3><p>Después de recuperar en una zona congestionada, alejar el balón y buscar el lado con menos rivales.</p></div>
+<div class="card"><h3>🧩 Compensar</h3><p>Si un jugador abandona una zona para generar ventaja, otro debe fijarla o compensarla.</p></div>
+<div class="card"><h3>🔥 Presionar</h3><p>Tras pérdida: cerca y estructurados, presionar; si no, frenar la progresión y reorganizar.</p></div>
+<div class="card"><h3>🎯 Personalidad</h3><p>El jugador debe atreverse a decidir. El entrenador crea contextos para que la solución aparezca.</p></div>
+<div class="card"><h3>🌪️ Caos ordenado</h3><p>La estructura puede romperse si el equipo entiende qué espacio se libera, por qué y quién lo compensa.</p></div>
+</div>
+</section>
+</main></div>
+
+<div class="modal" id="modal" aria-hidden="true"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const E=[
+["Rondo de salida + hombre libre","Construcción","S13","Alta","6v3 en espacio rectangular. El equipo atrae a los defensores y busca al jugador libre, directo o mediante un apoyo.","Encontrar al hombre libre después de atraer presión.","6 atacantes + 3 defensores; 30x22 m.","2 toques; punto por superar una línea con pase al libre.","¿Quién está libre? ¿Qué rival hemos fijado? ¿Podemos jugar detrás?","Reducir espacio / añadir defensor."],
+["Tercer hombre con pivote cubierto","Tercer hombre","S14","Alta","Central juega con interior de cara para conectar con pivote o extremo que queda liberado.","Usar un intermediario para superar una cobertura.","6v3; dos zonas y un jugador objetivo.","Solo puntúa si la progresión llega mediante tercer hombre.","Perfil corporal, tiempo del apoyo y pase de cara.","Añadir defensor que salte al intermediario."],
+["Fijar o soltar","Conducción","S13","Muy alta","El poseedor conduce para provocar una decisión. Si el defensor no salta, debe soltar rápido.","Conducir con intención y reconocer cuándo el rival ha sido fijado.","4v4+3 comodines; 28x24 m.","Conducción que fija = ventaja para compañero; pérdida sin fijar resta.","¿A quién has obligado a decidir?","Limitar conducciones a 3 segundos."],
+["Ventana de aceleración","Ventaja","S15","Muy alta","Juego posicional: una recepción entre líneas abre una ventana breve para atacar profundidad.","Acelerar cuando aparece una ventaja y no permitir que desaparezca.","7v7+2 comodines; 40x32 m.","Tras recibir libre entre líneas, 5 segundos para progresar.","¿Qué ventaja apareció? ¿Por qué esperamos?","Reducir ventana a 3 segundos."],
+["Recuperar y salir","Cambio de lado","S14","Alta","Tras recuperación, primer pase fuera de la zona congestionada y conexión rápida con lado contrario.","Alejar el balón de la zona de recuperación.","6v6+2 comodines; 42x30 m.","Gol doble si la recuperación termina en cambio de lado y progresión.","Primer pase seguro, segundo pase agresivo.","Añadir transición rival inmediata."],
+["Rondo con presión tras pérdida","Presión tras pérdida","S13","Muy alta","5v2/6v3. Al perder, los cercanos reaccionan inmediatamente; si no pueden recuperar, frenan la salida.","Automatizar la reacción tras pérdida.","6v3; 20x20 m.","3 segundos para recuperar o impedir pase hacia fuera.","Distancia al balón, líneas de pase y segunda acción.","Aumentar superioridad defensiva."],
+["Romper línea, no acumular pases","Progresión","S15","Muy alta","Juego donde superar una línea vale más que acumular posesión horizontal.","Priorizar progresión útil sobre posesión estéril.","7v7+porteros; 55x42 m.","Punto extra por pase que supera línea de presión.","¿Qué ganamos con este pase?","Limitar pases laterales consecutivos."],
+["Cambio de orientación condicionado","Cambio de lado","S13","Alta","El rival puede acumular defensores en una zona; cuando se sobrecarga, el equipo debe encontrar el lado débil.","Reconocer superioridad espacial en lado contrario.","7v7+comodines; 45x35 m.","Gol doble tras cambio de orientación rápido.","Contar rivales antes de decidir.","Añadir tiempo límite."],
+["Juego de 3 zonas","Superioridades","S14","Muy alta","Para avanzar, el equipo debe generar ventaja posicional. Se permiten intercambios si existe compensación.","Atacar espacios sin perder la estructura.","7v7; tres zonas longitudinales.","Un jugador puede cambiar zona si otro fija/compensa.","¿Qué espacio has dejado? ¿Quién lo ocupa?","Eliminar zonas para aumentar libertad."],
+["Caos ordenado","Compensación","S16","Muy alta","Se liberan posiciones deliberadamente. El equipo debe reconocer qué zona queda vacía y compensarla.","Romper estructura con responsabilidad.","8v8; 60x45 m.","El ataque solo vale si la estructura de seguridad se mantiene.","Libertad, comunicación y responsabilidad.","Aumentar restricciones de tiempo."],
+["Recibir antes que llegue el rival","Recepción","S13","Alta","El jugador decide apoyo o ruptura según el tiempo de viaje del balón y llegada del defensor.","Dominar el momento de recepción.","4v4+3; 25x25 m.","Recibir perfilado y superar rival = punto.","Escanear antes de recibir.","Un toque en recepción."],
+["Finalización tras ventaja","Último tercio","S15","Muy alta","Al aparecer un jugador libre con línea hacia portería, el equipo debe acelerar y finalizar.","Convertir ventaja en ocasión.","6v5+portero; 45x35 m.","Ventana de 6 segundos desde recepción ventajosa.","No volver a empezar si ya existe ventaja.","Añadir defensor recuperador."],
+["Atracción y ruptura","Atracción","S14","Muy alta","Un jugador atrae al defensor y libera el espacio a su espalda para un compañero.","Provocar y atacar la reacción rival.","5v5+2 comodines; 38x30 m.","Gol tras fijación + ruptura.","¿A quién hemos atraído? ¿Quién aparece libre?","Defensor con libertad para saltar."],
+["Salida con pase de seguridad","Construcción","S13","Media","Los centrales atraen y conservan una línea de seguridad detrás del balón.","No forzar el pase cuando no existe ventaja.","6v4; 35x28 m.","Punto por superar presión sin pérdida.","Paciencia, perfil y distancia de apoyo.","Añadir una segunda línea rival."],
+["Central que conduce y fija","Construcción","S15","Alta","Central avanza con balón si tiene espacio y conduce hasta provocar la salida de un rival.","Generar ventaja desde línea defensiva.","7v6; 50x40 m.","Conducción que fija + pase al libre puntúa doble.","No conducir por conducir: debe provocar decisión.","Limitar zona de conducción."],
+["Intercambio de interiores","Movilidad","S16","Muy alta","Tres interiores cambian posiciones en construcción para crear dudas y liberar líneas.","Movilidad con referencias, no movimientos automáticos.","8v8; 55x42 m.","Punto por superar línea después de intercambio.","Quién fija, quién libera y quién compensa.","Permitir cambios de zona libres."],
+["Apoyo de espaldas + tercer hombre","Tercer hombre","S14","Alta","Un delantero/interior recibe de espaldas, descarga y el tercer jugador ataca el espacio.","Usar apoyo como puente hacia la progresión.","5v4+portero; 42x30 m.","Finalización tras tercer hombre.","Calidad de apoyo y velocidad de desmarque.","Añadir segundo defensor."],
+["2v2 + comodín tras pérdida","Presión tras pérdida","S13","Muy alta","Tras pérdida, el jugador más cercano presiona y el segundo cierra línea de pase.","Primera y segunda acción defensiva.","2v2+1; 22x18 m.","Recuperación en 5 s = 2 puntos.","Ángulo de presión y cierre interior.","Reducir espacio."],
+["Recuperación en banda → lado contrario","Cambio de lado","S15","Muy alta","Recuperación cerca de banda: salida segura, apoyo y cambio rápido al lado opuesto.","Salir de la zona donde el rival está más concentrado.","7v7+porteros; 55x42 m.","Gol tras cambio de lado en máximo 4 pases.","Primer pase aleja; no devolver al embudo.","Añadir comodín central."],
+["Juego de puertas de progresión","Progresión","S13","Alta","Varias puertas representan líneas rivales; el equipo debe decidir cuál atacar.","Elegir la puerta que ofrece mayor ventaja.","5v5+3; 35x28 m.","Punto por atravesar puerta con control.","Mirada antes de recibir.","Cerrar una puerta aleatoriamente."],
+["Superioridad 3v2 y continuidad","Ventaja","S14","Muy alta","3 atacantes contra 2 defensores; tras finalización, nueva pelota entra inmediatamente para continuidad.","Resolver superioridad sin ralentizar.","3v2 + portero; 30x25 m.","Finalizar antes de que llegue tercer defensor.","Atacar al defensor que debe decidir.","Convertir en 4v3."],
+["Rondo de orientación corporal","Recepción","S13","Media","Rondo con obligación de recibir orientado hacia una salida exterior.","Preparar la siguiente acción antes de recibir.","5v2; 18x18 m.","Punto extra si recepción permite pase hacia fuera.","Escaneo y perfil corporal.","Reducir toques."],
+["Presión: cerca, estructurados","Presión tras pérdida","S15","Muy alta","El equipo debe decidir si presiona o repliega según distancia al balón y estructura.","No presionar por automatismo ciego.","7v7; 50x40 m.","Recuperación o pase hacia atrás forzado = punto.","Distancia, cobertura y protección del centro.","Añadir regla de contraataque rival."],
+["Defender alto y volver a atacar","Defensa organizada","S16","Muy alta","Línea defensiva adelantada; tras recuperar, el equipo debe conservar estructura para atacar.","Defender para volver a tener balón.","8v8+porteros; 60x45 m.","Recuperación alta + 3 pases = punto.","Distancias entre líneas.","Ampliar campo."],
+["Ritmo: acelerar o pausar","Ritmo","S15","Alta","Juego con señales que obligan a decidir si acelerar o conservar.","Controlar el ritmo según el contexto.","8v8; 55x42 m.","Gol tras aceleración adecuada o 8 pases tras pausa correcta.","Leer contexto, no jugar siempre rápido.","Quitar señales y dejar decisión libre."],
+["Personalidad: solución libre","Personalidad","S16","Muy alta","Juego sin instrucciones sobre la solución. El entrenador solo puntúa decisiones eficaces y explica después.","Desarrollar autonomía y personalidad.","8v8+porteros; 60x45 m.","Bonificación por solución creativa que mantiene ventaja.","Preguntar '¿por qué?' en lugar de dar respuesta.","Aumentar incertidumbre."],
+["3v3 + 3 apoyos exteriores","Superioridades","S13","Alta","Apoyos exteriores crean líneas de pase y el equipo debe reconocer cuándo utilizarlos.","Usar apoyos para generar ventajas.","3v3+3; 28x22 m.","Cambio de apoyo + progresión = punto.","Fijar antes de jugar fuera.","Limitar comodines a un toque."],
+["Salida ante presión hombre a hombre","Construcción","S16","Muy alta","Rival presiona individualmente; los atacantes deben crear separación y usar cambios de posición.","Liberarse de la marca mediante movilidad.","7v7; 52x40 m.","Superar primera línea y conectar con zona objetivo.","Separación, timing y tercer hombre.","Añadir portero como apoyo."],
+["Ataque de espacio tras fijación","Profundidad","S14","Muy alta","Un jugador fija al central y otro ataca el espacio liberado.","Coordinar fijación y ruptura.","5v4+portero; 42x32 m.","Finalización tras fijación.","Timing de la ruptura.","Defensor puede anticipar."],
+["Juego de superioridad detrás de presión","Tercer hombre","S15","Muy alta","El equipo atrae al rival hacia una zona y busca inmediatamente al jugador liberado detrás.","Superar presión con una acción que tenga sentido.","7v6; 48x38 m.","Gol o pase objetivo detrás de presión.","Atraer de verdad antes de salir.","Reducir espacio."],
+["Robo y transición en 6 segundos","Transición defensa-ataque","S15","Muy alta","Tras recuperar, el equipo tiene seis segundos para aprovechar la desorganización rival.","Reconocer cuándo acelerar después de recuperar.","6v6+porteros; 50x38 m.","Gol en 6 s = 3 puntos.","Primer pase vertical o cambio de lado según contexto.","Ampliar tiempo a 8 s."],
+["Compensación del lateral","Compensación","S16","Alta","Lateral se incorpora; interior o central debe ajustar la zona que queda expuesta.","Atacar sin romper la estructura de seguridad.","7v7; 55x42 m.","Ataque vale doble si mantiene cobertura preventiva.","¿Quién protege el espacio?","Liberar ambos laterales y aumentar exigencia."],
+["Finalización con segunda acción","Finalización","S14","Muy alta","Después de tiro o centro, el equipo debe reaccionar a rechace y segunda jugada.","No desconectar tras la primera acción.","6v5+portero; 40x32 m.","Gol en segunda acción = 2 puntos.","Reacción y ocupación de rechace.","Limitar reboteador."],
+["Partido ARV: ventaja, pérdida, respuesta","Integrador","Juvenil","Muy alta","Partido condicionado que combina ventajas, cambios de lado, compensación y presión tras pérdida.","Transferir principios al contexto global.","8v8+porteros; 60x45 m.","Bonificaciones por principios, no por posesión vacía.","Preguntar y observar más que intervenir.","Eliminar todas las bonificaciones y evaluar conducta real."]
+];
+
+const diag={
+slow:["La hipótesis principal es de lectura + velocidad de ejecución. La ventaja aparece, pero el equipo no la ataca antes de que el rival se reorganice.","Acelerar cuando aparece una ventaja real.",[4,12,26]],
+switch:["Tras recuperar, el equipo continúa en una zona que el rival ya ha cerrado. Falta reconocer el lado débil y alejar el balón.","Primer pase para salir de la zona; después buscar el lado con menos rivales.",[5,8,19]],
+free:["El equipo no está identificando al jugador que tiene más ventaja o no construye el camino para encontrarlo.","Reconocer al libre y llegar directo o mediante intermediario.",[1,2,36]],
+third:["El receptor final está cubierto y el equipo no usa correctamente al jugador intermediario.","Tercer hombre: apoyo, descarga y aparición del jugador libre.",[2,17,31]],
+build:["La presión rival está funcionando porque no provocamos una reacción suficientemente clara o forzamos pases sin ventaja.","Atraer, fijar, seguridad y superar la primera línea cuando aparece la opción.",[1,14,28]],
+back:["El jugador recibe de espaldas sin información suficiente o sin apoyo útil.","Preparar la recepción y crear una salida antes de recibir.",[11,17,22]],
+fix:["La conducción no genera una decisión defensiva y el equipo acaba acumulando jugadores o perdiendo el balón.","Conducir para fijar; si no se fija, soltar.",[3,15,29]],
+space:["Romper posiciones puede ser bueno, pero el problema aparece cuando nadie fija o compensa el espacio abandonado.","Libertad con responsabilidad y estructura de seguridad.",[9,10,32]],
+final:["Llegamos al campo rival pero no convertimos posesión en profundidad. Puede faltar ruptura, movilidad o decisión.","Generar desajuste y acelerar la ventaja.",[12,30,34]],
+width:["Tenemos amplitud, pero no aprovechamos el espacio contrario cuando el rival se acumula.","Reconocer la sobrecarga y cambiar de lado rápido.",[8,19,20]],
+loss:["La reacción tras pérdida no está suficientemente automatizada.","Cerca + estructurados: presionar; si no, frenar y reorganizar.",[6,23,34]],
+counter:["El primer defensor es superado porque no existe una segunda acción de cobertura.","Primero proteger la progresión rival; después recuperar.",[6,23,34]],
+press:["Presionamos por impulso, pero sin cubrir la siguiente línea de pase.","La presión debe ir acompañada de coberturas y protección del centro.",[23,21,36]],
+defend:["Defendemos demasiado lejos de la portería rival y después necesitamos recorrer demasiados metros para volver a atacar.","Defender con intención de recuperar y volver a tener balón.",[25,34,36]],
+tempo:["No todo ataque debe ser rápido. El equipo debe reconocer cuándo acelerar y cuándo conservar para atraer.","Controlar el ritmo según el contexto.",[27,1,12]],
+personality:["Los jugadores están esperando una solución externa. Necesitamos crear contextos donde tengan que interpretar.","Preguntar, provocar y permitir soluciones diferentes.",[28,36,10]]
+};
+
+function esc(s){return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+function svg(i,big=false){
+ const e=E[i], title=e[0], org=(e[6]||"").toLowerCase();
+ const text=(title+" "+e[1]+" "+e[4]+" "+e[5]+" "+e[7]+" "+org).toLowerCase();
+ const W=big?1100:640,H=big?590:350,pad=big?48:28;
+ let fw=W-pad*2, fh=H-pad*2;
+ const dims=text.match(/(\d+)\s*x\s*(\d+)/);
+ if(dims){const a=+dims[1],b=+dims[2];fh=Math.min(fh,fw*b/a);}
+ else if(text.includes("campo completo")){fh=Math.min(fh,fw*.62);}
+ else {fh=Math.min(fh,fw*.72);}
+ const x0=(W-fw)/2,y0=(H-fh)/2;
+ const id=i+(big?"B":"S");
+ const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+ const defs=`<defs>
+ <filter id="sh${id}" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-opacity=".14"/></filter>
+ <marker id="pb${id}" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0L9,4.5L0,9Z" fill="#126b4a"/></marker>
+ <marker id="pr${id}" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0L9,4.5L0,9Z" fill="#b64a43"/></marker>
+ </defs>`;
+ const field=`<rect x="${x0}" y="${y0}" width="${fw}" height="${fh}" rx="15" fill="#dff0e5" stroke="#76aa8c" stroke-width="${big?2:1.5}"/>
+ <line x1="${x0+fw/2}" y1="${y0}" x2="${x0+fw/2}" y2="${y0+fh}" stroke="#96c1a6" stroke-width="${big?1.8:1.2}"/>
+ <circle cx="${x0+fw/2}" cy="${y0+fh/2}" r="${Math.min(fw,fh)*.11}" fill="none" stroke="#96c1a6" stroke-width="${big?1.8:1.2}"/>
+ <circle cx="${x0+fw/2}" cy="${y0+fh/2}" r="2.5" fill="#96c1a6"/>`;
+ let out="";
+ let count=0;
+ const player=(team,x,y,num)=>{
+   count++;
+   const c=team==="B"?"#187e57":team==="R"?"#bd5047":team==="J"?"#d39b2b":"#3975a0";
+   const s=team==="B"?"#0d543b":team==="R"?"#833a34":team==="J"?"#876216":"#285675";
+   return `<g filter="url(#sh${id})"><circle cx="${x}" cy="${y}" r="${big?16:11}" fill="${c}" stroke="#fff" stroke-width="${big?3:2}"/><text x="${x}" y="${y+(big?4:3.5)}" text-anchor="middle" font-family="Arial" font-size="${big?10:7.5}" font-weight="800" fill="#fff">${num}</text></g>`;
+ };
+ const pass=(a,b)=>`<path d="M${a[0]} ${a[1]} L${b[0]} ${b[1]}" fill="none" stroke="#126b4a" stroke-width="${big?4:2.5}" marker-end="url(#pb${id})" stroke-linecap="round"/>`;
+ const move=(a,b)=>`<path d="M${a[0]} ${a[1]} Q${(a[0]+b[0])/2} ${(a[1]+b[1])/2-12} ${b[0]} ${b[1]}" fill="none" stroke="#126b4a" stroke-width="${big?3:2}" stroke-dasharray="9 6" marker-end="url(#pb${id})"/>`;
+ const press=(a,b)=>`<path d="M${a[0]} ${a[1]} L${b[0]} ${b[1]}" fill="none" stroke="#b64a43" stroke-width="${big?3:2}" stroke-dasharray="6 5" marker-end="url(#pr${id})"/>`;
+ const ball=p=>`<circle cx="${p[0]}" cy="${p[1]}" r="${big?6:4}" fill="#fff" stroke="#20372e" stroke-width="1.5"/><path d="M${p[0]-3} ${p[1]}l3-3 3 3-3 3z" fill="#20372e"/>`;
+ const txt=(x,y,t)=>`<text x="${x}" y="${y}" font-family="Arial" font-size="${big?13:9}" font-weight="700" fill="#21453a">${esc(t)}</text>`;
+ let total=8;
+ const vm=org.match(/(\d+)\s*v\s*(\d+)/);
+ if(vm) total=+vm[1]+ +vm[2]+((org.match(/\+\s*(\d+)\s*(?:c|comod)/)||[])[1]||0)*1;
+ else {const m=org.match(/(\d+)\s*(?:jugadores|jugador)/);if(m)total=+m[1];}
+ const cx=x0+fw/2,cy=y0+fh/2;
+ if(text.includes("tercer hombre")){
+   const A=[x0+fw*.16,cy+25],B=[x0+fw*.42,cy-38],C=[x0+fw*.73,cy];
+   out+=player("B",...A,1)+player("B",...B,2)+player("B",...C,3);
+   const R1=[x0+fw*.56,cy+8],R2=[x0+fw*.40,cy+65];
+   out+=player("R",...R1,1)+player("R",...R2,2);
+   for(let k=5;k<total;k++){out+=player(k%2?"R":"B",x0+fw*(.12+.76*((k-4)/(total-3))),y0+fh*(k%2?.18:.82),k-1);}
+   out+=pass(A,B)+pass(B,C)+move(B,[x0+fw*.5,cy-100])+press(R1,C)+ball(A)+txt(x0+fw*.33,cy-82,"apoyo → tercer hombre");
+ }else if(text.includes("cambio")||text.includes("lado contrario")||text.includes("orientación")){
+   const P=[[x0+fw*.14,cy+30],[x0+fw*.32,cy-35],[x0+fw*.51,cy+5],[x0+fw*.82,cy-45]];
+   P.forEach((p,k)=>out+=player("B",...p,k+1));
+   const R=[[x0+fw*.29,cy+45],[x0+fw*.46,cy+58],[x0+fw*.60,cy+38]];
+   R.forEach((p,k)=>out+=player("R",...p,k+1));
+   for(let k=7;k<total;k++)out+=player(k%2?"R":"B",x0+fw*(.2+.6*((k-6)/(total-6))),y0+fh*(k%2?.2:.78),k-2);
+   out+=pass(P[0],P[1])+pass(P[1],P[2])+pass(P[2],P[3])+ball(P[0])+txt(x0+fw*.62,y0+fh*.17,"lado débil");
+ }else if(text.includes("presión tras pérdida")||text.includes("tras pérdida")){
+   const B=[[cx-115,cy],[cx-20,cy-42],[cx+65,cy-10]];
+   const R=[[cx+10,cy+12],[cx+76,cy+58],[cx-55,cy+65]];
+   B.forEach((p,k)=>out+=player("B",...p,k+1));R.forEach((p,k)=>out+=player("R",...p,k+1));
+   for(let k=6;k<total;k++)out+=player(k%2?"R":"B",x0+fw*(.15+.7*((k-5)/(total-5))),y0+fh*(k%2?.2:.8),k-2);
+   out+=pass(B[0],B[1])+pass(B[1],B[2])+ball(B[2])+press(R[0],B[2])+press(R[2],B[0])+txt(cx-80,cy-88,"zona de pérdida");
+ }else{
+   const b=vm?+vm[1]:Math.ceil(total*.55),r=total-b;
+   for(let k=0;k<b;k++){const cols=Math.ceil(Math.sqrt(b)),rows=Math.ceil(b/cols);const p=[x0+fw*(.16+.28*(k%cols)/Math.max(1,cols-1)),y0+fh*(.2+.6*Math.floor(k/cols)/Math.max(1,rows-1))];out+=player("B",...p,k+1);if(k>0&&k<3)out+=pass([x0+fw*(.16+.28*((k-1)%cols)/Math.max(1,cols-1)),y0+fh*(.2+.6*Math.floor((k-1)/cols)/Math.max(1,rows-1))],p);}
+   for(let k=0;k<r;k++){const cols=Math.ceil(Math.sqrt(r)),rows=Math.ceil(r/cols);const p=[x0+fw*(.56+.28*(k%cols)/Math.max(1,cols-1)),y0+fh*(.2+.6*Math.floor(k/cols)/Math.max(1,rows-1))];out+=player("R",...p,k+1);}
+   out+=ball([x0+fw*.16,y0+fh*.2]);
+ }
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(title)}">${defs}<rect width="${W}" height="${H}" rx="18" fill="#f8fbf9"/>${field}${out}</svg>`;
+}
+
+function renderExercises(){
+ const q=(document.getElementById("search").value||"").toLowerCase(),tag=document.getElementById("filterTag").value,age=document.getElementById("filterAge").value,int=document.getElementById("filterIntensity").value;
+ const a=E.map((x,i)=>({x,i})).filter(o=>(o.x.join(" ").toLowerCase().includes(q))&&(!tag||o.x[1]===tag)&&(!age||o.x[2]===age)&&(!int||o.x[3]===int));
+ document.getElementById("exerciseGrid").innerHTML=a.length?a.map(o=>`<article class="card exercise" onclick="openModal(${o.i})"><div class="diagram">${svg(o.i)}</div><div class="exbody"><div class="tag">${esc(o.x[1])} · ${esc(o.x[2])}</div><h3>${esc(o.x[0])}</h3><p>${esc(o.x[4])}</p><div class="footer"><span class="pill">${esc(o.x[3])}</span><button class="btn secondary" onclick="event.stopPropagation();openModal(${o.i})">Ver ficha →</button></div></div></article>`).join(""):`<div class="card" style="grid-column:1/-1;text-align:center;padding:35px;color:#6b7b74">No hay ejercicios con esos filtros.</div>`;
+}
+function openModal(i){
+ const e=E[i];
+ window.currentExercise=i;
+ document.getElementById("dBread").textContent=`Biblioteca  ›  ${e[1]}  ›  ${e[0]}`;
+ document.getElementById("dSide").innerHTML=`
+   <div class="ey">EJERCICIO ${String(i+1).padStart(2,"0")}</div>
+   <h2>${esc(e[0])}</h2>
+   <div class="meta"><span class="pill">${esc(e[1])}</span><span class="pill">${esc(e[2])}</span><span class="pill">${esc(e[3])}</span></div>
+   <div class="side-section"><strong>Organización</strong><span>${esc(e[6])}</span></div>
+   <div class="side-section"><strong>Principio</strong><span>${esc(e[1])}</span></div>
+   <div class="side-section"><strong>Intensidad</strong><span>${esc(e[3])}</span></div>
+   <div class="btn-row"><button class="btn" style="width:100%" onclick="addToSession(${i})">Añadir a sesión +</button></div>`;
+ document.getElementById("dVisual").innerHTML=`<div class="bigdiagram">${svg(i,true)}</div><div class="visual-actions"><span class="muted" style="font-size:12px;margin-right:auto">Representación táctica de la organización y acción principal</span><span class="pill">Azul · ataque</span><span class="pill" style="background:#fff0ee;color:#a43a31;border-color:#f0d0cc">Rojo · defensa</span></div>`;
+ document.getElementById("dCopy").innerHTML=detailOverview(e);
+ go("exerciseDetail");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function detailOverview(e){
+ const desc=e[4], obj=e[5], org=e[6], rule=e[7], keys=e[8], prog=e[9];
+ const sequence=sequenceFrom(e);
+ const common=commonErrorsFrom(e);
+ return `
+ <h1>${esc(e[0])}</h1>
+ <p class="lead">${esc(desc)}</p>
+ <div class="explanation"><strong>¿Qué queremos conseguir?</strong><span>${esc(obj)} La tarea está diseñada para que el jugador tenga que reconocer la información del entorno y no limitarse a ejecutar un movimiento prefijado.</span></div>
+ <div class="detail-grid">
+   <div class="info-card"><h3>📐 Organización</h3><p>${esc(org)}</p></div>
+   <div class="info-card"><h3>🎯 Regla / puntuación</h3><p>${esc(rule)}</p></div>
+   <div class="info-card"><h3>🧠 Qué debe interpretar el jugador</h3><p>${esc(keys)}</p></div>
+   <div class="info-card"><h3>⚠️ Errores que queremos evitar</h3><ul>${common.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+   <div class="info-card full"><h3>▶️ Secuencia de la tarea</h3><div class="sequence">${sequence.map((x,n)=>`<div class="step"><span class="n">${n+1}</span><p>${esc(x)}</p></div>`).join("")}</div></div>
+   <div class="info-card full"><h3>👨‍🏫 Claves del entrenador</h3><div class="key-list">${keys.split(/[.;]/).filter(Boolean).map(x=>`<div class="key-item">${esc(x.trim())}</div>`).join("")}</div></div>
+   <div class="info-card full"><h3>↗️ Progresión / regresión</h3><p>${esc(prog)}</p></div>
+ </div>`;
+}
+function sequenceFrom(e){
+ return [
+   `Coloca el espacio y los jugadores exactamente según la organización indicada: ${e[6]}.`,
+   `Inicia la tarea y observa qué información aparece antes de intervenir. El objetivo es que el comportamiento nazca de la situación.`,
+   `Aplica la regla principal: ${e[7]}.`,
+   `Intervén sobre el comportamiento prioritario: ${e[8]}.`,
+   `Aumenta o reduce la dificultad según la respuesta del grupo: ${e[9]}.`
+ ];
+}
+function commonErrorsFrom(e){
+ const t=(e[0]+" "+e[4]+" "+e[8]).toLowerCase(), out=[];
+ if(t.includes("pase")||t.includes("posesión")) out.push("Pasar por pasar sin haber provocado una ventaja.");
+ if(t.includes("conduc")) out.push("Conducir sin fijar a un rival o sin intención de provocar una respuesta.");
+ if(t.includes("presi")) out.push("Saltar a presionar sin valorar distancia, cobertura o segunda acción.");
+ if(t.includes("cambio")||t.includes("lado")) out.push("Cambiar de orientación tarde, cuando el rival ya ha podido reorganizarse.");
+ if(t.includes("tercer")) out.push("Buscar el tercer hombre sin que exista una relación clara de apoyo y ruptura.");
+ if(t.includes("compens")) out.push("Abandonar una zona sin que otro jugador la fije o compense.");
+ if(!out.length) out.push("Ejecutar la tarea de forma mecánica sin reconocer la información del juego.","Intervenir demasiado pronto y resolver la situación por los jugadores.");
+ return out.slice(0,3);
+}
+function detailTab(btn,tab){
+ document.querySelectorAll(".exercise-tabs button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
+ const e=E[window.currentExercise||0];
+ const copy=document.getElementById("dCopy");
+ if(tab==="overview"){copy.innerHTML=detailOverview(e);return}
+ if(tab==="description"){copy.innerHTML=`<h1>${esc(e[0])}</h1><p class="lead">${esc(e[4])}</p><div class="detail-grid"><div class="info-card full"><h3>Objetivo metodológico</h3><p>${esc(e[5])}</p></div><div class="info-card"><h3>Contexto</h3><p>La tarea debe conservar suficiente oposición y libertad para que la decisión tenga sentido. El entrenador observa primero y corrige después.</p></div><div class="info-card"><h3>Qué buscamos</h3><p>${esc(e[8])}</p></div></div>`;return}
+ if(tab==="rules"){copy.innerHTML=`<h1>Reglas y puntuación</h1><p class="lead">La regla debe hacer que el comportamiento que buscamos sea más probable sin convertir la tarea en una coreografía.</p><div class="info-card full"><h3>Regla principal</h3><p>${esc(e[7])}</p></div><div class="detail-grid"><div class="info-card"><h3>Organización</h3><p>${esc(e[6])}</p></div><div class="info-card"><h3>Intervención</h3><p>Si la regla está provocando comportamientos que no queremos, modifica la restricción antes de añadir instrucciones.</p></div></div>`;return}
+ if(tab==="keys"){copy.innerHTML=`<h1>Claves del entrenador</h1><p class="lead">Preguntas cortas, observables y relacionadas con la información que el jugador debe detectar.</p><div class="key-list">${e[8].split(/[.;]/).filter(Boolean).map(x=>`<div class="key-item">${esc(x.trim())}</div>`).join("")}</div><div class="detail-grid"><div class="info-card"><h3>Pregunta útil</h3><p>¿Qué información has visto antes de actuar?</p></div><div class="info-card"><h3>Evitar</h3><p>Dar directamente la solución cada vez que aparece el problema.</p></div></div>`;return}
+ copy.innerHTML=`<h1>Progresiones y regresiones</h1><p class="lead">La dificultad se modifica para mantener el problema que queremos entrenar, no simplemente para hacerlo más difícil.</p><div class="info-card full"><h3>Propuesta</h3><p>${esc(e[9])}</p></div><div class="detail-grid"><div class="info-card"><h3>Si resulta demasiado fácil</h3><p>Aumenta oposición, reduce tiempo/espacio o añade una consecuencia que premie la solución correcta.</p></div><div class="info-card"><h3>Si resulta demasiado difícil</h3><p>Amplía espacio, reduce oposición o da una ventaja inicial que permita que aparezca el comportamiento.</p></div></div>`;
+}
+function closeModal(){go("ejercicios")}
+function addToSession(i){toast("Añadido: "+E[i][0]);go("sesion")}
+function buildSession(){
+ const g=document.getElementById("goal").value;
+ const S={
+ adv:[["0–12’","Juego de activación con balón","Rondo competitivo + orientación."],["12–30’","Ventana de aceleración","Reconocer la ventaja y atacar antes del cierre."],["30–52’","Fijar o soltar","Conducir para provocar decisión; no conducir por inercia."],["52–77’","Finalización tras ventaja","Contexto global con presión y finalización."],["77–90’","Vuelta a la calma + feedback","2–3 aprendizajes del día."]],
+ switch:[["0–12’","Rondo de activación","Escaneo y apoyos."],["12–30’","Recuperar y salir","Primer pase aleja de la congestión."],["30–52’","Cambio de orientación condicionado","Detectar acumulación rival."],["52–77’","Recuperación → lado contrario","Transferencia en juego global."],["77–90’","Feedback","Por qué cambiamos de lado."]],
+ free:[["0–12’","Rondo de orientación","Preparar la siguiente acción."],["12–32’","Hombre libre","Atraer y liberar."],["32–55’","Tercer hombre","Usar intermediario para superar cobertura."],["55–77’","Juego de superioridad detrás de presión","Transferir a contexto real."],["77–90’","Feedback","Qué información permitió decidir."]],
+ build:[["0–12’","Rueda de pases orientada","Perfil y pase de seguridad."],["12–32’","Salida con pase de seguridad","Atraer sin forzar."],["32–55’","Romper línea","Premiar progresión útil."],["55–77’","Salida ante presión","Presión real y continuidad."],["77–90’","Feedback","Qué provocamos al rival."]],
+ loss:[["0–12’","Rondo competitivo","Activación + reacción."],["12–30’","Rondo con presión tras pérdida","Primeros segundos."],["30–52’","Presión: cerca, estructurados","Decidir si presionar o frenar."],["52–77’","Partido ARV","Transferencia global."],["77–90’","Feedback","Primera y segunda acción."]],
+ structure:[["0–12’","Juego de activación","Movilidad y referencias."],["12–32’","Juego de 3 zonas","Intercambiar con compensación."],["32–55’","Caos ordenado","Romper estructura con responsabilidad."],["55–77’","Compensación del lateral","Atacar sin perder seguridad."],["77–90’","Partido ARV","Transferencia."]]
+ };
+ document.getElementById("plan").innerHTML=S[g].map(x=>`<div class="session-item"><div class="time">${x[0]}</div><div><strong>${x[1]}</strong><div class="muted" style="font-size:12px">${x[2]}</div></div><button class="btn secondary" onclick="toast('Tarea seleccionada')">Ver</button></div>`).join("");
+}
+function toast(t){const e=document.getElementById("toast");e.textContent=t;e.style.display="block";clearTimeout(window.to);window.to=setTimeout(()=>e.style.display="none",2200)}
+initFilters();renderExercises();diagnose();buildSession();
+</script>
+</body>
+</html>
