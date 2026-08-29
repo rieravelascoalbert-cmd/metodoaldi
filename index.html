@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ARV · Sistema de Metodología V10 · Biblioteca táctica</title>
+<title>ARV · Sistema de Metodología V10 · Biblioteca táctica — ARV V13</title>
 <style>
 :root{--g:#0d4f35;--g2:#176b49;--mint:#e8f5ef;--bg:#f4f7f5;--t:#173027;--m:#6b7b74;--w:#fff;--l:#dce5e0;--r:18px;--sh:0 10px 30px rgba(17,48,38,.08)}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--t)}
@@ -357,11 +357,11 @@ aside{width:245px!important;min-width:245px!important;position:sticky!important;
 <header class="top"><div class="brand">ARV <small>SISTEMA DE METODOLOGÍA · V5</small></div><button onclick="location.reload()">Reiniciar</button></header>
 <div class="layout">
 <aside><nav class="nav">
-<button class="active" data-page="inicio">Inicio</button>
-<button data-page="diagnostico">🧠 Diagnóstico</button>
-<button data-page="ejercicios">⚽ Ejercicios</button>
-<button data-page="sesion">🏋️ Sesión</button>
-<button data-page="modelo">◈ Modelo</button>
+<button class="active" data-page="inicio" type="button">Inicio</button>
+<button data-page="diagnostico" type="button">🧠 Diagnóstico</button>
+<button data-page="ejercicios" type="button">⚽ Ejercicios</button>
+<button data-page="sesion" type="button">🏋️ Sesión</button>
+<button data-page="modelo" type="button">◈ Modelo</button>
 </nav></aside>
 <main>
 
@@ -667,5 +667,38 @@ function buildSession(){
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.style.display="block";clearTimeout(window.to);window.to=setTimeout(()=>e.style.display="none",2200)}
 initFilters();renderExercises();diagnose();buildSession();
 </script>
+
+<script>
+/* ARV V12 — navegación robusta */
+(function(){
+  const originalGo = window.go;
+  window.go = function(id){
+    const target=document.getElementById(id);
+    if(!target){ console.warn("ARV: sección no encontrada",id); return; }
+    document.querySelectorAll(".page,.detailpage").forEach(p=>p.classList.remove("active"));
+    target.classList.add("active");
+    document.querySelectorAll(".nav button").forEach(b=>{
+      const page=b.dataset.page || b.getAttribute("data-page");
+      b.classList.toggle("active", page===id || (id==="exerciseDetail" && page==="ejercicios"));
+    });
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+
+  document.addEventListener("click",function(ev){
+    const b=ev.target.closest(".nav button[data-page]");
+    if(!b)return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    window.go(b.dataset.page);
+  },true);
+
+  window.addEventListener("DOMContentLoaded",function(){
+    const first=document.querySelector(".nav button[data-page]");
+    const active=document.querySelector(".nav button.active[data-page]");
+    if(!document.querySelector(".page.active,.detailpage.active") && first) window.go((active||first).dataset.page);
+  });
+})();
+</script>
+
 </body>
 </html>
