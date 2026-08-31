@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ARV · Sistema de Metodología V10 · Biblioteca táctica — ARV V13</title>
+<title>ARV · Sistema de Metodología V14 · Biblioteca táctica — ARV V15</title>
 <style>
 :root{--g:#0d4f35;--g2:#176b49;--mint:#e8f5ef;--bg:#f4f7f5;--t:#173027;--m:#6b7b74;--w:#fff;--l:#dce5e0;--r:18px;--sh:0 10px 30px rgba(17,48,38,.08)}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--t)}
@@ -351,10 +351,54 @@ aside{width:245px!important;min-width:245px!important;position:sticky!important;
 .exercise-visual .bigdiagram{background:linear-gradient(145deg,#e2f2e8,#d5eade)!important}
 .exercise-visual .bigdiagram svg{max-height:555px}
 
+
+/* =========================
+   ARV V22 · Fichas y gráficos tácticos
+   ========================= */
+.exercise-spec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
+.spec-chip{background:linear-gradient(180deg,#fff,#f6faf7);border:1px solid #dbe8df;border-radius:15px;padding:12px 13px;box-shadow:0 5px 16px rgba(19,70,48,.05)}
+.spec-chip .k{display:block;font-size:9px;text-transform:uppercase;letter-spacing:1.1px;font-weight:900;color:#718078;margin-bottom:5px}.spec-chip .v{display:block;font-size:14px;font-weight:900;color:#173a2d}
+.quick-explain{background:linear-gradient(135deg,#eff9f3,#fff);border:1px solid #cfe5d7;border-radius:17px;padding:17px 18px;margin:14px 0 18px;box-shadow:0 7px 20px rgba(18,91,62,.05)}
+.quick-explain strong{display:block;color:#0b5b3e;font-size:11px;text-transform:uppercase;letter-spacing:1.1px;margin-bottom:6px}.quick-explain span{font-size:14px;line-height:1.65;color:#28443a}
+.load-card{background:linear-gradient(180deg,#fff,#f8fbf9);border:1px solid #dbe7e0;border-radius:17px;padding:16px;box-shadow:0 6px 18px rgba(19,70,48,.04)}
+.load-card h3{margin:0 0 11px;font-size:14px;color:#173a2d}.load-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.load-cell{background:#f3f7f4;border:1px solid #e0ebe4;border-radius:12px;padding:10px;text-align:center}.load-cell b{display:block;font-size:17px;color:#0b5b3e}.load-cell span{display:block;font-size:9px;color:#718079;text-transform:uppercase;letter-spacing:.7px;margin-top:3px}
+.diagram-legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.diagram-legend span{font-size:10px;font-weight:850;background:#fff;border:1px solid #dbe7e0;border-radius:999px;padding:6px 9px;box-shadow:0 3px 10px rgba(0,0,0,.03)}
+.visual-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:10px}.visual-actions .pill{font-size:10px}
+.detail-grid .info-card{box-shadow:0 7px 20px rgba(19,70,48,.045)}
+.tip-card{background:linear-gradient(135deg,#f5fbf7,#fff);border:1px solid #cfe5d7;border-radius:17px;padding:16px 18px}.tip-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tip{background:#fff;border:1px solid #dfeae3;border-radius:14px;padding:12px;display:flex;gap:10px;align-items:flex-start}.tip .tn{width:27px;height:27px;border-radius:50%;background:#0b5b3e;color:#fff;display:grid;place-items:center;font-weight:900;font-size:11px;flex:0 0 auto}.tip p{margin:1px 0 0;font-size:12px;line-height:1.5;color:#29453b}
+@media(max-width:900px){.exercise-spec{grid-template-columns:repeat(2,1fr)}.tip-list{grid-template-columns:1fr}.load-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
-</head>
+
+<style id="v24-css">
+.v24-dims text{font:900 12px Arial,sans-serif;fill:#234b37;stroke:#fff;stroke-width:3px;paint-order:stroke}
+.v24-pass{fill:none;stroke:#172d25;stroke-width:2.4;stroke-linecap:round}
+.v24-press{fill:none;stroke:#efaaa2;stroke-width:2.2;stroke-dasharray:7 6;stroke-linecap:round}
+</style>
+<style id="arv-v25-rondo-fix">.tactical-svg .player.free circle{stroke:#fff;stroke-width:3px}</style><style id="arv-v26">
+.tactical-svg{display:block;width:100%;height:auto;overflow:visible;font-family:Inter,Arial,sans-serif}
+.tactical-svg .dimension{font-size:13px;font-weight:700;fill:#355e49}
+.tactical-svg .player circle{stroke:#fff;stroke-width:3px}
+.tactical-svg .player text{font-size:10px;font-weight:800;fill:#fff;stroke:none}
+.tactical-svg .attacker circle{fill:#168a5b}
+.tactical-svg .defender circle{fill:#d1495b}
+.tactical-svg .neutral circle{fill:#e2a91b}
+.tactical-svg .arrow{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.tactical-svg .arrow.pass{stroke:#0b5b3e;stroke-width:3px}
+.tactical-svg .arrow.move{stroke:#0b5b3e;stroke-width:2.4px;stroke-dasharray:7 6}
+.tactical-svg .arrow.press{stroke:#c2413b;stroke-width:2.4px;stroke-dasharray:6 6}
+</style><style id="arv-v28-css">
+.tactical-svg{display:block;width:100%;height:auto;overflow:visible;font-family:Inter,Arial,sans-serif}
+.tactical-svg .dimension{font-size:13px;font-weight:700;fill:#355e49}
+.tactical-svg .player circle{stroke:#fff;stroke-width:3px}
+.tactical-svg .player text{font-size:10px;font-weight:800;fill:#fff;stroke:none}
+.tactical-svg .attacker circle{fill:#168a5b}
+.tactical-svg .defender circle{fill:#d1495b}
+.tactical-svg .arrow{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.tactical-svg .arrow.pass{stroke:#0b5b3e;stroke-width:3px}
+.tactical-svg .arrow.press{stroke:#c2413b;stroke-width:2.4px;stroke-dasharray:6 6}
+</style></head>
 <body>
-<header class="top"><div class="brand">ARV <small>SISTEMA DE METODOLOGÍA · V5</small></div><button onclick="location.reload()">Reiniciar</button></header>
+<header class="top"><div class="brand">ARV <small>SISTEMA DE METODOLOGÍA · V22</small></div><button onclick="location.reload()">Reiniciar</button></header>
 <div class="layout">
 <aside><nav class="nav">
 <button class="active" data-page="inicio" type="button">Inicio</button>
@@ -366,7 +410,7 @@ aside{width:245px!important;min-width:245px!important;position:sticky!important;
 <main>
 
 <section id="inicio" class="page active">
-<div class="hero"><div class="ey">V5 · MOTOR ARV</div><h1>Diagnosticar → entender → entrenar → comprobar.</h1><p>Una biblioteca viva de tareas para enseñar a los jugadores a interpretar el juego: encontrar ventajas, acelerar cuando aparecen, atraer, liberar, cambiar de lado y reaccionar tras pérdida.</p></div>
+<div class="hero"><div class="ey">V22 · MOTOR ARV</div><h1>Diagnosticar → entender → entrenar → comprobar.</h1><p>Una biblioteca viva de tareas para enseñar a los jugadores a interpretar el juego: encontrar ventajas, acelerar cuando aparecen, atraer, liberar, cambiar de lado y reaccionar tras pérdida.</p></div>
 <div class="grid">
 <div class="card"><div class="ey">Problemas</div><div class="stat">16</div><p class="muted">Situaciones de partido con hipótesis y prioridades de intervención.</p><button class="btn" onclick="go('diagnostico')">Diagnosticar</button></div>
 <div class="card"><div class="ey">Biblioteca</div><div class="stat" id="count">36</div><p class="muted">Ejercicios con gráfico táctico, organización, reglas y variantes.</p><button class="btn secondary" onclick="go('ejercicios')">Explorar</button></div>
@@ -419,7 +463,7 @@ aside{width:245px!important;min-width:245px!important;position:sticky!important;
 </section>
 
 <section id="exerciseDetail" class="detailpage">
-<div class="detail-top"><button class="backbtn" onclick="go('ejercicios')">← Volver a la biblioteca</button><div class="btn-row" style="margin:0"><button class="btn secondary" onclick="toast('Gráfico preparado para descargar')">↓ Descargar gráfico</button><button class="btn secondary" onclick="toast('Modo pantalla completa')">⛶ Pantalla completa</button></div></div>
+<div class="detail-top"><button class="backbtn" onclick="go('ejercicios')">← Volver a la biblioteca</button><div class="btn-row" style="margin:0"><button class="btn secondary" onclick="downloadDiagram()">↓ Descargar gráfico</button><button class="btn secondary" onclick="fullscreenDiagram()">⛶ Pantalla completa</button></div></div>
 <div class="breadcrumb" id="dBread"></div>
 <div class="exercise-layout">
 <aside class="exercise-side" id="dSide"></aside>
@@ -512,72 +556,119 @@ personality:["Los jugadores están esperando una solución externa. Necesitamos 
 };
 
 function esc(s){return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+const DIAGRAMS={
+  0:{kind:'rondoFree',zone:'build',ball:0, arrows:[[0,1],[1,5]], labels:['atraer','hombre libre']},
+  1:{kind:'third',zone:'build',ball:0, arrows:[[0,1],[1,2],[2,3]], labels:['apoyo','tercer hombre']},
+  2:{kind:'fix',zone:'progress',ball:0, arrows:[[0,1],[1,4]], labels:['conducir para fijar']},
+  3:{kind:'window',zone:'progress',ball:1, arrows:[[1,5],[5,7]], labels:['ventana de aceleración']},
+  4:{kind:'switch',zone:'progress',ball:0, arrows:[[0,1],[1,2],[2,3]], labels:['zona de recuperación','lado débil']},
+  5:{kind:'loss',zone:'small',ball:2, arrows:[[0,1],[1,2]], pressures:[[3,2],[5,0]], labels:['zona de pérdida','3 segundos']},
+  6:{kind:'lines',zone:'large',ball:0, arrows:[[0,4],[4,8]], labels:['superar línea']},
+  7:{kind:'switch',zone:'progress',ball:1, arrows:[[1,2],[2,5],[5,7]], labels:['sobrecarga','cambio de orientación']},
+  8:{kind:'zones',zone:'large',ball:2, arrows:[[2,6]], labels:['intercambio','compensación']},
+  9:{kind:'chaos',zone:'large',ball:1, arrows:[[1,4],[4,6]], labels:['espacio liberado','compensar']},
+  10:{kind:'possession',zone:'small',ball:0, arrows:[[0,3],[3,5]], labels:['escaneo','recibir con ventaja']},
+  11:{kind:'finish',zone:'finish',ball:1, arrows:[[1,6],[6,8]], labels:['ventaja','finalizar']},
+  12:{kind:'possession',zone:'finish',ball:0, arrows:[[0,1],[1,4],[4,7]], labels:['fijar','ruptura']},
+  13:{kind:'build',zone:'build',ball:0, arrows:[[0,1],[1,2]], labels:['seguridad','superar presión']},
+  14:{kind:'carry',zone:'build',ball:0, arrows:[[0,2],[2,5]], labels:['central conduce','fijar']},
+  15:{kind:'mobility',zone:'build',ball:1, arrows:[[1,4],[4,6],[6,2]], labels:['intercambio de interiores']},
+  16:{kind:'third',zone:'finish',ball:1, arrows:[[1,4],[4,7],[7,8]], labels:['apoyo de espaldas','tercer hombre']},
+  17:{kind:'loss',zone:'small',ball:0, arrows:[[0,1]], pressures:[[3,0],[4,1]], labels:['primera acción','segunda acción']},
+  18:{kind:'switch',zone:'finish',ball:1, arrows:[[1,2],[2,5],[5,7]], labels:['banda','lado contrario']},
+  19:{kind:'doors',zone:'progress',ball:0, arrows:[[0,4],[4,6]], labels:['puertas de progresión']},
+  20:{kind:'superiority',zone:'finish',ball:0, arrows:[[0,2],[2,4]], labels:['3v2','continuidad']},
+  21:{kind:'rondo',zone:'small',ball:1, arrows:[[1,3],[3,5]], labels:['perfil corporal','salida exterior']},
+  22:{kind:'loss',zone:'large',ball:2, arrows:[[2,3]], pressures:[[4,2],[5,3]], labels:['presionar','cerrar centro']},
+  23:{kind:'highdef',zone:'large',ball:5, arrows:[[5,7],[7,9]], labels:['bloque alto','volver a atacar']},
+  24:{kind:'tempo',zone:'large',ball:1, arrows:[[1,4],[4,6]], labels:['pausar','acelerar']},
+  25:{kind:'freeplay',zone:'large',ball:2, arrows:[[2,5],[5,8]], labels:['solución libre']},
+  26:{kind:'support',zone:'small',ball:0, arrows:[[0,4],[4,6]], labels:['apoyo exterior','progresar']},
+  27:{kind:'manmark',zone:'build',ball:0, arrows:[[0,2],[2,5],[5,7]], labels:['separación','tercer hombre']},
+  28:{kind:'fixbreak',zone:'finish',ball:1, arrows:[[1,3],[3,6],[6,8]], labels:['fijación','atacar espacio']},
+  29:{kind:'third',zone:'progress',ball:0, arrows:[[0,2],[2,4],[4,7]], labels:['atraer','salir detrás']},
+  30:{kind:'transition',zone:'large',ball:2, arrows:[[2,5],[5,8]], labels:['6 segundos','vertical o cambio']},
+  31:{kind:'compensate',zone:'large',ball:1, arrows:[[1,4],[4,7]], labels:['lateral se incorpora','cobertura']},
+  32:{kind:'secondball',zone:'finish',ball:1, arrows:[[1,6],[6,8]], labels:['primera acción','rechace']},
+  33:{kind:'integrated',zone:'large',ball:3, arrows:[[3,5],[5,8]], pressures:[[10,3],[11,5]], labels:['ventaja','pérdida → respuesta']},
+  34:{kind:'generic',zone:'small',ball:0, arrows:[[0,1]], labels:['apoyo']},
+  35:{kind:'generic',zone:'large',ball:0, arrows:[[0,1],[1,4]], labels:['progresión']}
+};
+
+function parseOrg(org){
+  const t=org.toLowerCase(); let b=0,r=0,y=0,gk=0;
+  const m=t.match(/(\d+)\s*v\s*(\d+)/); if(m){b=+m[1];r=+m[2];}
+  const c=t.match(/\+\s*(\d+)\s*(?:c|comod)/); if(c)y=+c[1];
+  if(/\bporteros\b/.test(t))gk=2; else if(/\bportero\b/.test(t))gk=1;
+  if(!b&&!r){const j=t.match(/(\d+)\s*(?:jugadores|jugador)/); if(j)b=+j[1];}
+  return {b,r,y,gk,total:b+r+y+gk};
+}
 function svg(i,big=false){
- const e=E[i], title=e[0], org=(e[6]||"").toLowerCase();
- const text=(title+" "+e[1]+" "+e[4]+" "+e[5]+" "+e[7]+" "+org).toLowerCase();
- const W=big?1100:640,H=big?590:350,pad=big?48:28;
- let fw=W-pad*2, fh=H-pad*2;
- const dims=text.match(/(\d+)\s*x\s*(\d+)/);
- if(dims){const a=+dims[1],b=+dims[2];fh=Math.min(fh,fw*b/a);}
- else if(text.includes("campo completo")){fh=Math.min(fh,fw*.62);}
- else {fh=Math.min(fh,fw*.72);}
- const x0=(W-fw)/2,y0=(H-fh)/2;
- const id=i+(big?"B":"S");
- const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
- const defs=`<defs>
- <filter id="sh${id}" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-opacity=".14"/></filter>
- <marker id="pb${id}" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0L9,4.5L0,9Z" fill="#126b4a"/></marker>
- <marker id="pr${id}" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0L9,4.5L0,9Z" fill="#b64a43"/></marker>
- </defs>`;
- const field=`<rect x="${x0}" y="${y0}" width="${fw}" height="${fh}" rx="15" fill="#dff0e5" stroke="#76aa8c" stroke-width="${big?2:1.5}"/>
- <line x1="${x0+fw/2}" y1="${y0}" x2="${x0+fw/2}" y2="${y0+fh}" stroke="#96c1a6" stroke-width="${big?1.8:1.2}"/>
- <circle cx="${x0+fw/2}" cy="${y0+fh/2}" r="${Math.min(fw,fh)*.11}" fill="none" stroke="#96c1a6" stroke-width="${big?1.8:1.2}"/>
- <circle cx="${x0+fw/2}" cy="${y0+fh/2}" r="2.5" fill="#96c1a6"/>`;
- let out="";
- let count=0;
- const player=(team,x,y,num)=>{
-   count++;
-   const c=team==="B"?"#187e57":team==="R"?"#bd5047":team==="J"?"#d39b2b":"#3975a0";
-   const s=team==="B"?"#0d543b":team==="R"?"#833a34":team==="J"?"#876216":"#285675";
-   return `<g filter="url(#sh${id})"><circle cx="${x}" cy="${y}" r="${big?16:11}" fill="${c}" stroke="#fff" stroke-width="${big?3:2}"/><text x="${x}" y="${y+(big?4:3.5)}" text-anchor="middle" font-family="Arial" font-size="${big?10:7.5}" font-weight="800" fill="#fff">${num}</text></g>`;
- };
- const pass=(a,b)=>`<path d="M${a[0]} ${a[1]} L${b[0]} ${b[1]}" fill="none" stroke="#126b4a" stroke-width="${big?4:2.5}" marker-end="url(#pb${id})" stroke-linecap="round"/>`;
- const move=(a,b)=>`<path d="M${a[0]} ${a[1]} Q${(a[0]+b[0])/2} ${(a[1]+b[1])/2-12} ${b[0]} ${b[1]}" fill="none" stroke="#126b4a" stroke-width="${big?3:2}" stroke-dasharray="9 6" marker-end="url(#pb${id})"/>`;
- const press=(a,b)=>`<path d="M${a[0]} ${a[1]} L${b[0]} ${b[1]}" fill="none" stroke="#b64a43" stroke-width="${big?3:2}" stroke-dasharray="6 5" marker-end="url(#pr${id})"/>`;
- const ball=p=>`<circle cx="${p[0]}" cy="${p[1]}" r="${big?6:4}" fill="#fff" stroke="#20372e" stroke-width="1.5"/><path d="M${p[0]-3} ${p[1]}l3-3 3 3-3 3z" fill="#20372e"/>`;
- const txt=(x,y,t)=>`<text x="${x}" y="${y}" font-family="Arial" font-size="${big?13:9}" font-weight="700" fill="#21453a">${esc(t)}</text>`;
- let total=8;
- const vm=org.match(/(\d+)\s*v\s*(\d+)/);
- if(vm) total=+vm[1]+ +vm[2]+((org.match(/\+\s*(\d+)\s*(?:c|comod)/)||[])[1]||0)*1;
- else {const m=org.match(/(\d+)\s*(?:jugadores|jugador)/);if(m)total=+m[1];}
- const cx=x0+fw/2,cy=y0+fh/2;
- if(text.includes("tercer hombre")){
-   const A=[x0+fw*.16,cy+25],B=[x0+fw*.42,cy-38],C=[x0+fw*.73,cy];
-   out+=player("B",...A,1)+player("B",...B,2)+player("B",...C,3);
-   const R1=[x0+fw*.56,cy+8],R2=[x0+fw*.40,cy+65];
-   out+=player("R",...R1,1)+player("R",...R2,2);
-   for(let k=5;k<total;k++){out+=player(k%2?"R":"B",x0+fw*(.12+.76*((k-4)/(total-3))),y0+fh*(k%2?.18:.82),k-1);}
-   out+=pass(A,B)+pass(B,C)+move(B,[x0+fw*.5,cy-100])+press(R1,C)+ball(A)+txt(x0+fw*.33,cy-82,"apoyo → tercer hombre");
- }else if(text.includes("cambio")||text.includes("lado contrario")||text.includes("orientación")){
-   const P=[[x0+fw*.14,cy+30],[x0+fw*.32,cy-35],[x0+fw*.51,cy+5],[x0+fw*.82,cy-45]];
-   P.forEach((p,k)=>out+=player("B",...p,k+1));
-   const R=[[x0+fw*.29,cy+45],[x0+fw*.46,cy+58],[x0+fw*.60,cy+38]];
-   R.forEach((p,k)=>out+=player("R",...p,k+1));
-   for(let k=7;k<total;k++)out+=player(k%2?"R":"B",x0+fw*(.2+.6*((k-6)/(total-6))),y0+fh*(k%2?.2:.78),k-2);
-   out+=pass(P[0],P[1])+pass(P[1],P[2])+pass(P[2],P[3])+ball(P[0])+txt(x0+fw*.62,y0+fh*.17,"lado débil");
- }else if(text.includes("presión tras pérdida")||text.includes("tras pérdida")){
-   const B=[[cx-115,cy],[cx-20,cy-42],[cx+65,cy-10]];
-   const R=[[cx+10,cy+12],[cx+76,cy+58],[cx-55,cy+65]];
-   B.forEach((p,k)=>out+=player("B",...p,k+1));R.forEach((p,k)=>out+=player("R",...p,k+1));
-   for(let k=6;k<total;k++)out+=player(k%2?"R":"B",x0+fw*(.15+.7*((k-5)/(total-5))),y0+fh*(k%2?.2:.8),k-2);
-   out+=pass(B[0],B[1])+pass(B[1],B[2])+ball(B[2])+press(R[0],B[2])+press(R[2],B[0])+txt(cx-80,cy-88,"zona de pérdida");
- }else{
-   const b=vm?+vm[1]:Math.ceil(total*.55),r=total-b;
-   for(let k=0;k<b;k++){const cols=Math.ceil(Math.sqrt(b)),rows=Math.ceil(b/cols);const p=[x0+fw*(.16+.28*(k%cols)/Math.max(1,cols-1)),y0+fh*(.2+.6*Math.floor(k/cols)/Math.max(1,rows-1))];out+=player("B",...p,k+1);if(k>0&&k<3)out+=pass([x0+fw*(.16+.28*((k-1)%cols)/Math.max(1,cols-1)),y0+fh*(.2+.6*Math.floor((k-1)/cols)/Math.max(1,rows-1))],p);}
-   for(let k=0;k<r;k++){const cols=Math.ceil(Math.sqrt(r)),rows=Math.ceil(r/cols);const p=[x0+fw*(.56+.28*(k%cols)/Math.max(1,cols-1)),y0+fh*(.2+.6*Math.floor(k/cols)/Math.max(1,rows-1))];out+=player("R",...p,k+1);}
-   out+=ball([x0+fw*.16,y0+fh*.2]);
- }
- return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(title)}">${defs}<rect width="${W}" height="${H}" rx="18" fill="#f8fbf9"/>${field}${out}</svg>`;
+  const e=E[i], spec=DIAGRAMS[i]||DIAGRAMS[35], W=big?1120:700, H=big?650:430, pad=big?62:48;
+  const o=parseOrg(e[6]);
+  const dm=(e[6]||'').match(/(\d+)\s*x\s*(\d+)/i);
+  let fw=W-pad*2, fh=H-pad*2-22;
+  if(dm) fh=Math.min(fh,fw*(+dm[2]/+dm[1])); else fh=Math.min(fh,fw*.68);
+  const x0=(W-fw)/2+10,y0=(H-fh)/2+15,cx=x0+fw/2,cy=y0+fh/2;
+  const id='v22_'+i+'_'+(big?'b':'s');
+  const defs=`<defs>
+    <filter id="shadow${id}" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-opacity=".2"/></filter>
+    <linearGradient id="grass${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4d9a43"/><stop offset=".5" stop-color="#5da84e"/><stop offset="1" stop-color="#4b9440"/></linearGradient>
+    <pattern id="mow${id}" width="${Math.max(70,fw/6)}" height="${fh}" patternUnits="userSpaceOnUse"><rect width="${Math.max(70,fw/12)}" height="100%" fill="#ffffff" opacity=".035"/><rect x="${Math.max(70,fw/12)}" width="${Math.max(70,fw/12)}" height="100%" fill="#173f1f" opacity=".025"/></pattern>
+    <marker id="pass${id}" markerWidth="7" markerHeight="7" refX="6.2" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#1b3027"/></marker>
+    <marker id="move${id}" markerWidth="7" markerHeight="7" refX="6.2" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#b7e08c"/></marker>
+    <marker id="press${id}" markerWidth="7" markerHeight="7" refX="6.2" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#f2a39b"/></marker>
+  </defs>`;
+  const field=`<rect x="${x0}" y="${y0}" width="${fw}" height="${fh}" rx="12" fill="url(#grass${id})" stroke="#fff" stroke-width="2.5"/><rect x="${x0}" y="${y0}" width="${fw}" height="${fh}" rx="12" fill="url(#mow${id})"/><rect x="${x0+3}" y="${y0+3}" width="${fw-6}" height="${fh-6}" rx="9" fill="none" stroke="#e9f5e7" stroke-width="1.5" opacity=".9"/>`;
+  const dimW=dm?dm[1]:'' , dimH=dm?dm[2]:'';
+  const dimY=y0-24, dimX=x0-27;
+  const dimLines=dm?`<g><line x1="${x0}" y1="${dimY}" x2="${x0+fw}" y2="${dimY}" stroke="#234b37" stroke-width="1.4"/><line x1="${x0}" y1="${dimY-5}" x2="${x0}" y2="${dimY+5}" stroke="#234b37"/><line x1="${x0+fw}" y1="${dimY-5}" x2="${x0+fw}" y2="${dimY+5}" stroke="#234b37"/><rect x="${cx-31}" y="${dimY-9}" width="62" height="18" rx="9" fill="#fff"/><text x="${cx}" y="${dimY+4}" text-anchor="middle" font-family="Arial" font-size="${big?12:10}" font-weight="900" fill="#234b37">${dimW} m</text><line x1="${dimX}" y1="${y0}" x2="${dimX}" y2="${y0+fh}" stroke="#234b37" stroke-width="1.4"/><line x1="${dimX-5}" y1="${y0}" x2="${dimX+5}" y2="${y0}" stroke="#234b37"/><line x1="${dimX-5}" y1="${y0+fh}" x2="${dimX+5}" y2="${y0+fh}" stroke="#234b37"/><rect x="${dimX-9}" y="${cy-31}" width="18" height="62" rx="9" fill="#fff"/><text x="${dimX-1}" y="${cy}" text-anchor="middle" font-family="Arial" font-size="${big?12:10}" font-weight="900" fill="#234b37" transform="rotate(-90 ${dimX-1} ${cy})">${dimH} m</text></g>`:'';
+  const positions=[];
+  const add=(team,x,y,num,role='')=>positions.push({team,x,y,num,role});
+  const insideMargin=big?38:28;
+  const distribute=(n,team,cols=5,yRows=[.32,.68],xStart=.13,xEnd=.87)=>{for(let k=0;k<n;k++){const row=Math.floor(k/cols),col=k%cols, rows=Math.ceil(n/cols);const yy=y0+fh*(rows===1?.5:yRows[Math.min(row,yRows.length-1)]||.5);const xx=x0+fw*(rows===1?(xStart+(xEnd-xStart)*(col/Math.max(1,n-1))):(xStart+(xEnd-xStart)*(col/Math.max(1,cols-1))));add(team,xx,yy,k+1);}};
+  const ring=(n,team,rx,ry,start=-Math.PI/2)=>{for(let k=0;k<n;k++){const a=start+k*2*Math.PI/n;add(team,cx+Math.cos(a)*rx,cy+Math.sin(a)*ry,k+1);}};
+  const rondo=(n,team)=>{for(let k=0;k<n;k++){const a=-Math.PI/2+k*2*Math.PI/n;add(team,cx+Math.cos(a)*fw*.40,cy+Math.sin(a)*fh*.40,k+1);}};
+  const kind=spec.kind;
+  if(kind==='rondoFree'){
+    // 6 atacantes + 3 defensores, todos dentro del espacio.
+    const ap=[[.12,.50],[.28,.14],[.72,.14],[.88,.50],[.72,.86],[.28,.86]];
+    ap.forEach((p,k)=>add('B',x0+fw*p[0],y0+fh*p[1],k+1,k===5?'FREE':''));
+    const dp=[[.43,.43],[.57,.43],[.50,.62]];
+    dp.forEach((p,k)=>add('R',x0+fw*p[0],y0+fh*p[1],k+1));
+  }
+  else if(kind==='rondo'){rondo(o.b,'B'); ring(o.r,'R',fw*.13,fh*.13);}
+  else if(kind==='support'){ring(o.b,'B',fw*.18,fh*.18); for(let k=0;k<o.r;k++){const a=-Math.PI/2+k*2*Math.PI/o.r;add('R',cx+Math.cos(a)*fw*.11,cy+Math.sin(a)*fh*.11,k+1);} const js=[[x0+fw*.04,cy],[x0+fw*.96,cy],[cx,y0+fh*.04]]; js.slice(0,o.y).forEach((p,k)=>add('J',p[0],p[1],k+1));}
+  else if(kind==='possession'){distribute(o.b,'B',Math.max(2,Math.ceil(Math.sqrt(o.b))),[.30,.70],.12,.45); for(let k=0;k<o.r;k++){const col=k%Math.max(2,Math.ceil(Math.sqrt(o.r))),row=Math.floor(k/Math.max(2,Math.ceil(Math.sqrt(o.r))));add('R',x0+fw*(.55+.14*col),y0+fh*(.30+.35*row),k+1);} const js=[[x0+fw*.035,cy],[x0+fw*.965,cy],[cx,y0+fh*.04]];js.slice(0,o.y).forEach((p,k)=>add('J',p[0],p[1],k+1));}
+  else if(kind==='third'||kind==='build'||kind==='carry'||kind==='mobility'||kind==='manmark'||kind==='fixbreak'){for(let k=0;k<o.b;k++){const row=Math.floor(k/4),col=k%4;add('B',x0+fw*(.10+.25*col),y0+fh*(.24+.30*row),k+1);}for(let k=0;k<o.r;k++){const row=Math.floor(k/3),col=k%3;add('R',x0+fw*(.57+.14*col),y0+fh*(.28+.28*row),k+1);}for(let k=0;k<o.gk;k++)add('G',x0+fw*.91,cy,k+1,'GK');}
+  else if(kind==='switch'||kind==='doors'){for(let k=0;k<o.b;k++){const side=k%2, row=Math.floor(k/2);add('B',x0+fw*(side?.70:.30),y0+fh*(.20+.18*row),k+1);}for(let k=0;k<o.r;k++){const side=k%2,row=Math.floor(k/2);add('R',x0+fw*(side?.55:.45),y0+fh*(.28+.18*row),k+1);}for(let k=0;k<o.y;k++){add('J',x0+fw*(k%2?.96:.04),y0+fh*.50,k+1);}}
+  else if(kind==='finish'||kind==='secondball'||kind==='superiority'){for(let k=0;k<o.b;k++){const row=Math.floor(k/4),col=k%4;add('B',x0+fw*(.16+.22*col),y0+fh*(.68-.22*row),k+1);}for(let k=0;k<o.r;k++){const row=Math.floor(k/4),col=k%4;add('R',x0+fw*(.53+.11*col),y0+fh*(.27+.18*row),k+1);}for(let k=0;k<o.gk;k++)add('G',x0+fw*.93,cy,k+1,'GK');}
+  else if(kind==='loss'||kind==='transition'){ring(o.b,'B',fw*.27,fh*.25);for(let k=0;k<o.r;k++){const a=-Math.PI/2+k*2*Math.PI/o.r;add('R',cx+Math.cos(a)*fw*.10,cy+Math.sin(a)*fh*.10,k+1);}for(let k=0;k<o.y;k++)add('J',x0+fw*(k%2?.96:.04),cy,k+1);}
+  else if(kind==='highdef'||kind==='compensate'||kind==='chaos'||kind==='freeplay'||kind==='tempo'||kind==='integrated'||kind==='lines'||kind==='zones'){for(let k=0;k<o.b;k++){const col=k%5,row=Math.floor(k/5);add('B',x0+fw*(.10+.20*col),y0+fh*(.24+.48*Math.min(row,1)),k+1);}for(let k=0;k<o.r;k++){const col=k%5,row=Math.floor(k/5);add('R',x0+fw*(.32+.14*col),y0+fh*(.32+.32*Math.min(row,1)),k+1);}for(let k=0;k<o.gk;k++)add('G',x0+fw*.93,cy,k+1,'GK');}
+  else {rondo(o.b,'B');ring(o.r,'R',fw*.13,fh*.13);}
+  const teamNodes=t=>positions.filter(p=>p.team===t);
+  const B=teamNodes('B'),R=teamNodes('R'),J=teamNodes('J'),G=teamNodes('G');
+  let actions=[];
+  const addA=(from,to,type='pass')=>{if(from&&to&&from!==to)actions.push({from,to,type});};
+  if(kind==='rondoFree'){addA(B[0],B[1]);addA(B[1],B[B.length-1]); if(R[0])actions.push({from:R[0],to:B[1],type:'press'});}
+  else if(kind==='rondo'){addA(B[0],B[1]);addA(B[1],B[2]); if(R[0])actions.push({from:R[0],to:B[1],type:'press'});}
+  else if(kind==='support'||kind==='possession'){addA(B[0],B[Math.min(1,B.length-1)]);addA(B[Math.min(1,B.length-1)],B[Math.min(2,B.length-1)]);}
+  else if(kind==='third'||kind==='build'){addA(B[0],B[1]);addA(B[1],B[Math.min(2,B.length-1)]);addA(B[Math.min(2,B.length-1)],B[Math.min(3,B.length-1)]);}
+  else if(kind==='switch'){addA(B[0],B[1]);addA(B[1],B[Math.min(2,B.length-1)]);addA(B[Math.min(2,B.length-1)],B[Math.min(3,B.length-1)]);}
+  else if(kind==='finish'||kind==='secondball'||kind==='superiority'){addA(B[0],B[Math.min(1,B.length-1)]);addA(B[Math.min(1,B.length-1)],B[Math.min(2,B.length-1)]);}
+  else {addA(B[0],B[Math.min(1,B.length-1)]);if(B[2])addA(B[1],B[2]);}
+  if(kind==='loss'||kind==='transition'||kind==='highdef'||kind==='integrated'){if(R[0]&&B[0])actions.push({from:R[0],to:B[0],type:'press'});if(R[1]&&B[1])actions.push({from:R[1],to:B[1],type:'press'});}
+  if(kind==='rondo'&&R[1]&&B[0])actions.push({from:R[1],to:B[0],type:'press'});
+  const dist=(A,B,amount=big?20:14)=>{const dx=B.x-A.x,dy=B.y-A.y,len=Math.hypot(dx,dy)||1;return {x:A.x+dx/len*amount,y:A.y+dy/len*amount,ex:B.x-dx/len*amount,ey:B.y-dy/len*amount};};
+  let out='';
+  actions.forEach(a=>{const d=dist(a.from,a.to,a.from.team==='G'||a.to.team==='G'?14:(big?22:15));const col=a.type==='press'?'#f3aaa2':'#1c2d26', dash=a.type==='press'?'stroke-dasharray="7 6"':'';const marker=a.type==='press'?`press${id}`:'pass'+id;out+=`<path d="M${d.x.toFixed(1)} ${d.y.toFixed(1)} L${d.ex.toFixed(1)} ${d.ey.toFixed(1)}" fill="none" stroke="${col}" stroke-width="${big?3:2.2}" stroke-linecap="round" ${dash} marker-end="url(#${marker})"/>`;});
+  const ball=(B[Number.isInteger(spec.ball)?spec.ball:0]||B[0]||positions[0]);
+  if(ball){out+=`<g transform="translate(${ball.x-7},${ball.y-7})"><circle cx="7" cy="7" r="7" fill="#fff" stroke="#1d2925" stroke-width="1.3"/><path d="M7 3.3l2.6 1.9-1 3.1H5.4l-1-3.1L7 3.3zM3.1 5.2L1.8 6.7M10.9 5.2l1.3 1.5M5.1 8.3L4 10.2M8.9 8.3l1.1 1.9" fill="none" stroke="#1d2925" stroke-width=".8" stroke-linecap="round"/></g>`;}
+  positions.forEach(p=>{const fill=p.team==='B'?'#168a5b':p.team==='R'?'#cf4d45':p.team==='J'?'#e4b528':'#183b32';const r=big?17:13;const pc=p.role==='FREE'?' free':'';out+=`<g class="player${pc}" filter="url(#shadow${id})"><circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${fill}" stroke="#fff" stroke-width="${big?2.8:2.2}"/><text x="${p.x}" y="${p.y+4}" text-anchor="middle" font-family="Arial" font-size="${big?11:9}" font-weight="900" fill="#fff">${p.num}</text></g>`;});
+  // zones only where they add tactical information; never place text over players.
+  if(spec.zone==='progress'||spec.zone==='finish'){const zx=spec.zone==='finish'?x0+fw*.72:x0+fw*.55;out+=`<rect x="${zx}" y="${y0+10}" width="${fw*.20}" height="${fh-20}" rx="9" fill="#fff" opacity=".10" stroke="#fff" stroke-width="1.5" stroke-dasharray="7 6"/>`;}
+  if(kind==='zones'){for(let k=1;k<3;k++){const xx=x0+fw*k/3;out+=`<line x1="${xx}" y1="${y0+6}" x2="${xx}" y2="${y0+fh-6}" stroke="#fff" stroke-width="1.8" stroke-dasharray="8 7" opacity=".85"/>`;}}
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(e[0])}">${defs}<rect width="${W}" height="${H}" rx="18" fill="#f8fbf9"/>${dimLines}${field}${out}</svg>`;
 }
 
 function renderExercises(){
@@ -597,29 +688,50 @@ function openModal(i){
    <div class="side-section"><strong>Principio</strong><span>${esc(e[1])}</span></div>
    <div class="side-section"><strong>Intensidad</strong><span>${esc(e[3])}</span></div>
    <div class="btn-row"><button class="btn" style="width:100%" onclick="addToSession(${i})">Añadir a sesión +</button></div>`;
- document.getElementById("dVisual").innerHTML=`<div class="bigdiagram">${svg(i,true)}</div><div class="visual-actions"><span class="muted" style="font-size:12px;margin-right:auto">Representación táctica de la organización y acción principal</span><span class="pill">Azul · ataque</span><span class="pill" style="background:#fff0ee;color:#a43a31;border-color:#f0d0cc">Rojo · defensa</span></div>`;
- document.getElementById("dCopy").innerHTML=detailOverview(e);
+ document.getElementById("dVisual").innerHTML=`<div class="bigdiagram">${svg(i,true)}</div><div class="diagram-legend"><span>🟢 Atacante</span><span>🔴 Defensor</span><span>🟡 Comodín</span><span>⚫ Pase</span><span>🔴 Presión</span><span>⚽ Balón inicial</span></div>`;
+ document.getElementById("dCopy").innerHTML=detailOverview(e,i);
  go("exerciseDetail");
  window.scrollTo({top:0,behavior:"smooth"});
 }
-function detailOverview(e){
- const desc=e[4], obj=e[5], org=e[6], rule=e[7], keys=e[8], prog=e[9];
- const sequence=sequenceFrom(e);
- const common=commonErrorsFrom(e);
- return `
- <h1>${esc(e[0])}</h1>
- <p class="lead">${esc(desc)}</p>
- <div class="explanation"><strong>¿Qué queremos conseguir?</strong><span>${esc(obj)} La tarea está diseñada para que el jugador tenga que reconocer la información del entorno y no limitarse a ejecutar un movimiento prefijado.</span></div>
- <div class="detail-grid">
-   <div class="info-card"><h3>📐 Organización</h3><p>${esc(org)}</p></div>
-   <div class="info-card"><h3>🎯 Regla / puntuación</h3><p>${esc(rule)}</p></div>
-   <div class="info-card"><h3>🧠 Qué debe interpretar el jugador</h3><p>${esc(keys)}</p></div>
-   <div class="info-card"><h3>⚠️ Errores que queremos evitar</h3><ul>${common.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
-   <div class="info-card full"><h3>▶️ Secuencia de la tarea</h3><div class="sequence">${sequence.map((x,n)=>`<div class="step"><span class="n">${n+1}</span><p>${esc(x)}</p></div>`).join("")}</div></div>
-   <div class="info-card full"><h3>👨‍🏫 Claves del entrenador</h3><div class="key-list">${keys.split(/[.;]/).filter(Boolean).map(x=>`<div class="key-item">${esc(x.trim())}</div>`).join("")}</div></div>
-   <div class="info-card full"><h3>↗️ Progresión / regresión</h3><p>${esc(prog)}</p></div>
- </div>`;
+
+/* V22 · Carga práctica: nunca más de 12' efectivos por ejercicio. */
+const EXMETA = E.map((e,i)=>{
+  const text=e[6]||'';
+  const dm=text.match(/(\d+)\s*x\s*(\d+)/i);
+  const dims=dm?`${dm[1]} × ${dm[2]} m`:'Definido en la organización';
+  const pm=text.match(/(\d+)\s*v\s*(\d+)/i);
+  const players=pm?`${pm[1]}v${pm[2]}${/\+\s*\d+\s*(?:c|comod)/i.test(text)?' + comodines':''}${/portero/i.test(text)?' + portero(s)':''}`:(/rondo/i.test(e[0])?'Según rondo':'Según organización');
+  let series=3, mins=4, rec=1;
+  if(e[3]==='Muy alta'){series=4;mins=3;rec=1;}
+  else if(e[3]==='Alta'){series=3;mins=4;rec=1;}
+  else {series=3;mins=3;rec=1;}
+  return {dims,players,series,mins,rec,total:series*mins,material:'Balones, conos y petos',space:/rondo/i.test(e[0])?'Rondo':/posesión|juego de posición/i.test(e[0]+' '+e[4])?'Posesión':'Juego condicionado'};
+});
+function specHtml(e,i){const m=EXMETA[i]||EXMETA[0];return `<div class="exercise-spec"><div class="spec-chip"><span class="k">Espacio</span><span class="v">${esc(m.dims)}</span></div><div class="spec-chip"><span class="k">Jugadores</span><span class="v">${esc(m.players)}</span></div><div class="spec-chip"><span class="k">Series</span><span class="v">${m.series} × ${m.mins}'</span></div><div class="spec-chip"><span class="k">Recuperación</span><span class="v">${m.rec}'</span></div></div>`;}
+function loadHtml(i){const m=EXMETA[i]||EXMETA[0];return `<div class="load-card"><h3>⏱️ Carga propuesta</h3><div class="load-grid"><div class="load-cell"><b>${m.series}</b><span>series</span></div><div class="load-cell"><b>${m.mins}'</b><span>por serie</span></div><div class="load-cell"><b>${m.rec}'</b><span>recuperación</span></div><div class="load-cell"><b>${m.total}'</b><span>efectivos</span></div></div><p style="font-size:10px;color:#718079;margin:10px 0 0">Tiempo efectivo de trabajo. La recuperación no se contabiliza en los minutos del ejercicio.</p></div>`;}
+function tipsFrom(e){
+  const t=(e[0]+' '+e[5]+' '+e[8]+' '+e[7]).toLowerCase();
+  const tips=[];
+  if(t.includes('tercer')) tips.push('Observa si el jugador de apoyo atrae o fija y si el tercer hombre aparece en el momento adecuado.');
+  else if(t.includes('cambio')||t.includes('lado')) tips.push('Observa si reconocen cuándo el lado está congestionado y cambian antes de que el rival se reorganice.');
+  else if(t.includes('presi')||t.includes('pérdida')) tips.push('Observa la reacción inmediata del jugador más cercano y la cobertura de la segunda acción.');
+  else if(t.includes('conduc')||t.includes('fij')) tips.push('Observa si la conducción provoca una decisión real del defensor antes de soltar el balón.');
+  else if(t.includes('compens')) tips.push('Observa quién protege el espacio que deja el compañero cuando rompe su posición.');
+  else tips.push('Observa si el jugador reconoce la información antes de ejecutar la acción.');
+  if(t.includes('recep')||t.includes('perfil')||t.includes('espalda')) tips.push('Observa orientación corporal, escaneo previo y calidad del primer control.');
+  else if(t.includes('profund')||t.includes('ruptura')||t.includes('final')) tips.push('Observa el momento de la ruptura y si se acelera cuando realmente aparece la ventaja.');
+  else tips.push('Observa distancias entre compañeros y si existen líneas de pase útiles.');
+  if(t.includes('ritmo')||t.includes('aceler')) tips.push('Corrige la velocidad de la acción: ni acelerar sin ventaja ni conservar cuando la ventana está abierta.');
+  else if(t.includes('presi')||t.includes('defens')) tips.push('Corrige primero el ángulo y la distancia; después la intensidad de la presión.');
+  else tips.push('Corrige la decisión, no solo la ejecución: pregunta qué vio el jugador antes de intervenir.');
+  return tips.slice(0,3);
 }
+function detailOverview(e,i=window.currentExercise||0){
+  const desc=e[4], obj=e[5], org=e[6], rule=e[7], keys=e[8], prog=e[9];
+  const sequence=sequenceFrom(e), common=commonErrorsFrom(e), m=EXMETA[i]||EXMETA[0], tips=tipsFrom(e);
+  return `<h1>${esc(e[0])}</h1>${specHtml(e,i)}<div class="quick-explain"><strong>Explicación rápida</strong><span>${esc(desc)}</span></div>${loadHtml(i)}<div class="detail-grid"><div class="info-card"><h3>🎯 Objetivo</h3><p>${esc(obj)}</p></div><div class="info-card"><h3>📐 Organización</h3><p>${esc(org)}</p><p><strong>Material:</strong> ${esc(m.material)}</p></div><div class="info-card"><h3>📏 Regla / puntuación</h3><p>${esc(rule)}</p></div><div class="info-card"><h3>🧠 Qué debe interpretar</h3><p>${esc(keys)}</p></div><div class="info-card full"><h3>👨‍🏫 3 tips para observar y corregir</h3><div class="tip-list">${tips.map((x,n)=>`<div class="tip"><span class="tn">${n+1}</span><p>${esc(x)}</p></div>`).join('')}</div></div><div class="info-card"><h3>⚠️ Errores frecuentes</h3><ul>${common.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="info-card"><h3>↗️ Progresión / regresión</h3><p>${esc(prog)}</p></div><div class="info-card full"><h3>▶️ Secuencia de la tarea</h3><div class="sequence">${sequence.map((x,n)=>`<div class="step"><span class="n">${n+1}</span><p>${esc(x)}</p></div>`).join('')}</div></div></div>`;
+}
+
 function sequenceFrom(e){
  return [
    `Coloca el espacio y los jugadores exactamente según la organización indicada: ${e[6]}.`,
@@ -644,7 +756,7 @@ function detailTab(btn,tab){
  document.querySelectorAll(".exercise-tabs button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
  const e=E[window.currentExercise||0];
  const copy=document.getElementById("dCopy");
- if(tab==="overview"){copy.innerHTML=detailOverview(e);return}
+ if(tab==="overview"){copy.innerHTML=detailOverview(e,window.currentExercise||0);return}
  if(tab==="description"){copy.innerHTML=`<h1>${esc(e[0])}</h1><p class="lead">${esc(e[4])}</p><div class="detail-grid"><div class="info-card full"><h3>Objetivo metodológico</h3><p>${esc(e[5])}</p></div><div class="info-card"><h3>Contexto</h3><p>La tarea debe conservar suficiente oposición y libertad para que la decisión tenga sentido. El entrenador observa primero y corrige después.</p></div><div class="info-card"><h3>Qué buscamos</h3><p>${esc(e[8])}</p></div></div>`;return}
  if(tab==="rules"){copy.innerHTML=`<h1>Reglas y puntuación</h1><p class="lead">La regla debe hacer que el comportamiento que buscamos sea más probable sin convertir la tarea en una coreografía.</p><div class="info-card full"><h3>Regla principal</h3><p>${esc(e[7])}</p></div><div class="detail-grid"><div class="info-card"><h3>Organización</h3><p>${esc(e[6])}</p></div><div class="info-card"><h3>Intervención</h3><p>Si la regla está provocando comportamientos que no queremos, modifica la restricción antes de añadir instrucciones.</p></div></div>`;return}
  if(tab==="keys"){copy.innerHTML=`<h1>Claves del entrenador</h1><p class="lead">Preguntas cortas, observables y relacionadas con la información que el jugador debe detectar.</p><div class="key-list">${e[8].split(/[.;]/).filter(Boolean).map(x=>`<div class="key-item">${esc(x.trim())}</div>`).join("")}</div><div class="detail-grid"><div class="info-card"><h3>Pregunta útil</h3><p>¿Qué información has visto antes de actuar?</p></div><div class="info-card"><h3>Evitar</h3><p>Dar directamente la solución cada vez que aparece el problema.</p></div></div>`;return}
@@ -665,7 +777,121 @@ function buildSession(){
  document.getElementById("plan").innerHTML=S[g].map(x=>`<div class="session-item"><div class="time">${x[0]}</div><div><strong>${x[1]}</strong><div class="muted" style="font-size:12px">${x[2]}</div></div><button class="btn secondary" onclick="toast('Tarea seleccionada')">Ver</button></div>`).join("");
 }
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.style.display="block";clearTimeout(window.to);window.to=setTimeout(()=>e.style.display="none",2200)}
+function initFilters(){
+  const tags=[...new Set(E.map(x=>x[1]))].sort();
+  const sel=document.getElementById('filterTag'); if(sel) tags.forEach(t=>sel.insertAdjacentHTML('beforeend',`<option>${esc(t)}</option>`));
+}
+function diagnose(){
+  const key=document.getElementById('problem')?.value, box=document.getElementById('diag'); if(!box||!diag[key])return;
+  const d=diag[key]; const links=d[2].map(n=>n-1).filter(i=>i>=0&&i<E.length).map(i=>`<button class="btn secondary" style="margin:4px 4px 0 0" onclick="openModal(${i})">${esc(E[i][0])}</button>`).join('');
+  box.innerHTML=`<strong>Hipótesis ARV</strong><p>${esc(d[0])}</p><strong>Prioridad</strong><p>${esc(d[1])}</p><strong>Ejercicios relacionados</strong><div>${links}</div>`;
+}
+function go(id){
+  const target=document.getElementById(id); if(!target)return;
+  document.querySelectorAll('.page,.detailpage').forEach(p=>p.classList.remove('active')); target.classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id||(id==='exerciseDetail'&&b.dataset.page==='ejercicios')));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function downloadDiagram(){
+  const svgEl=document.querySelector('#dVisual svg'); if(!svgEl)return;
+  const blob=new Blob([new XMLSerializer().serializeToString(svgEl)],{type:'image/svg+xml'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ARV-grafico.svg'; a.click(); URL.revokeObjectURL(url);
+}
+function fullscreenDiagram(){const el=document.querySelector('#dVisual .bigdiagram'); if(el?.requestFullscreen)el.requestFullscreen();}
 initFilters();renderExercises();diagnose();buildSession();
+
+function renderTacticalGraphic(ex){
+  const first=/rondo de salida\s*\+\s*hombre libre/i.test(ex?.name||ex?.title||"");
+  const attackers=first?6:Math.max(0,parseInt(ex?.attackers??ex?.players?.attackers??6,10));
+  const defenders=first?3:Math.max(0,parseInt(ex?.defenders??ex?.players?.defenders??3,10));
+  const neutrals=first?0:Math.max(0,parseInt(ex?.neutrals??ex?.players?.neutrals??0,10));
+  const W=760,H=430,L=105,T=68,R=655,B=370,FW=550,FH=302;
+  const dim=first?"18 × 18 m":(ex?.dimensions||ex?.dimensiones||"18 × 18 m");
+  const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  let svg=`<svg class="tactical-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="p26" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z"/></marker>
+    <marker id="m26" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z"/></marker>
+    <marker id="r26" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z"/></marker>
+  </defs>
+  <rect width="${W}" height="${H}" rx="18" fill="#fff"/>
+  <rect x="${L}" y="${T}" width="${FW}" height="${FH}" rx="8" fill="#e6f2e8" stroke="#4d7f5b" stroke-width="2.2"/>
+  <line x1="${L+FW/2}" y1="${T}" x2="${L+FW/2}" y2="${B}" stroke="#a6c5ad" stroke-width="1.2"/>
+  <line x1="${L}" y1="${T-18}" x2="${R}" y2="${T-18}" stroke="#355e49" stroke-width="1.2"/>
+  <text x="${(L+R)/2}" y="${T-25}" text-anchor="middle" class="dimension">${esc(dim.split("×")[0].trim())} m</text>
+  <line x1="${L-18}" y1="${T}" x2="${L-18}" y2="${B}" stroke="#355e49" stroke-width="1.2"/>
+  <text x="${L-30}" y="${(T+B)/2}" text-anchor="middle" class="dimension" transform="rotate(-90 ${L-30} ${(T+B)/2})">${esc((dim.split("×")[1]||"18").replace("m","").trim())} m</text>`;
+
+  const pos=[];
+  if(first){
+    // ALL 9 players are inside the playing area.
+    [[.08,.18],[.34,.08],[.66,.08],[.92,.18],[.82,.82],[.18,.82]].forEach((p,i)=>pos.push({type:"A",n:i+1,x:L+FW*p[0],y:T+FH*p[1]}));
+    [[.42,.43],[.58,.43],[.50,.61]].forEach((p,i)=>pos.push({type:"D",n:i+1,x:L+FW*p[0],y:T+FH*p[1]}));
+  }else{
+    const a=[[.10,.18],[.30,.10],[.50,.08],[.70,.10],[.90,.18],[.82,.82],[.60,.90],[.40,.90],[.18,.82]];
+    for(let i=0;i<attackers;i++){let p=a[i%a.length];pos.push({type:"A",n:i+1,x:L+FW*p[0],y:T+FH*p[1]});}
+    const d=[[.42,.43],[.58,.43],[.50,.60],[.36,.57],[.64,.57],[.50,.50]];
+    for(let i=0;i<defenders;i++){let p=d[i%d.length];pos.push({type:"D",n:i+1,x:L+FW*p[0],y:T+FH*p[1]});}
+    const c=[[.03,.50],[.97,.50],[.50,.03],[.50,.97]];
+    for(let i=0;i<neutrals;i++){let p=c[i%c.length];pos.push({type:"C",n:i+1,x:L+FW*p[0],y:T+FH*p[1]});}
+  }
+
+  const bp=pos[0];
+  if(bp) svg+=`<g><circle cx="${bp.x}" cy="${bp.y-22}" r="8" fill="#fff" stroke="#222" stroke-width="1.5"/><path d="M${bp.x-4} ${bp.y-24}l4-3 4 3-1 5h-6z" fill="#222"/></g>`;
+
+  if(first){
+    const a=pos[0],b=pos[1];
+    svg+=`<path d="M${a.x} ${a.y} Q${(a.x+b.x)/2} ${a.y-16} ${b.x} ${b.y}" class="arrow pass" marker-end="url(#p26)"/>`;
+  }else{
+    const add=(s,cl,m)=>{
+      if(!s||!Number.isInteger(s.from)||!Number.isInteger(s.to))return;
+      const a=pos[s.from],b=pos[s.to]; if(!a||!b||a===b)return;
+      svg+=`<path d="M${a.x} ${a.y} Q${(a.x+b.x)/2} ${(a.y+b.y)/2-16} ${b.x} ${b.y}" class="arrow ${cl}" marker-end="url(#${m})"/>`;
+    };
+    add(ex.pass,"pass","p26"); add(ex.movement,"move","m26"); add(ex.press,"press","r26");
+  }
+
+  pos.forEach(p=>{
+    const cls=p.type==="A"?"attacker":p.type==="D"?"defender":"neutral";
+    const label=p.type==="A"?`A${p.n}`:p.type==="D"?`D${p.n}`:`C${p.n}`;
+    svg+=`<g class="player ${cls}"><circle cx="${p.x}" cy="${p.y}" r="16"/><text x="${p.x}" y="${p.y+4}" text-anchor="middle">${label}</text></g>`;
+  });
+  return svg+"</svg>";
+}
+
+
+function renderThirdManCoveredPivot(){
+  const W=760,H=430,L=105,T=68,R=655,B=370,FW=550,FH=302;
+  const pos=[
+    {t:"A",n:1,x:L+FW*.12,y:T+FH*.50}, // central defender / start
+    {t:"A",n:2,x:L+FW*.50,y:T+FH*.18}, // interior
+    {t:"A",n:3,x:L+FW*.82,y:T+FH*.50}, // third man
+    {t:"A",n:4,x:L+FW*.50,y:T+FH*.86}, // pivot
+    {t:"D",n:1,x:L+FW*.50,y:T+FH*.43}, // covers pivot
+    {t:"D",n:2,x:L+FW*.66,y:T+FH*.43}
+  ];
+  let s=`<svg class="tactical-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="v28arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z"/></marker></defs>
+  <rect width="${W}" height="${H}" rx="18" fill="#fff"/>
+  <rect x="${L}" y="${T}" width="${FW}" height="${FH}" rx="8" fill="#e6f2e8" stroke="#4d7f5b" stroke-width="2.2"/>
+  <line x1="${L}" y1="${T-18}" x2="${R}" y2="${T-18}" stroke="#355e49" stroke-width="1.2"/>
+  <text x="${(L+R)/2}" y="${T-25}" text-anchor="middle" class="dimension">24 m</text>
+  <line x1="${L-18}" y1="${T}" x2="${L-18}" y2="${B}" stroke="#355e49" stroke-width="1.2"/>
+  <text x="${L-30}" y="${(T+B)/2}" text-anchor="middle" class="dimension" transform="rotate(-90 ${L-30} ${(T+B)/2})">20 m</text>`;
+  // First pass: player 1 -> player 2
+  s+=`<path d="M${pos[0].x} ${pos[0].y} Q${(pos[0].x+pos[1].x)/2} ${(pos[0].y+pos[1].y)/2-18} ${pos[1].x} ${pos[1].y}" class="arrow pass" marker-end="url(#v28arr)"/>`;
+  // Third-man pass: player 2 -> player 3
+  s+=`<path d="M${pos[1].x} ${pos[1].y} Q${(pos[1].x+pos[2].x)/2} ${(pos[1].y+pos[2].y)/2-18} ${pos[2].x} ${pos[2].y}" class="arrow pass" marker-end="url(#v28arr)"/>`;
+  // Defender pressure on the interior player
+  s+=`<path d="M${pos[4].x} ${pos[4].y} Q${(pos[4].x+pos[1].x)/2} ${(pos[4].y+pos[1].y)/2+12} ${pos[1].x} ${pos[1].y}" class="arrow press" marker-end="url(#v28arr)"/>`;
+  pos.forEach(p=>{
+    const cls=p.t==="A"?"attacker":"defender";
+    s+=`<g class="player ${cls}"><circle cx="${p.x}" cy="${p.y}" r="16"/><text x="${p.x}" y="${p.y+4}" text-anchor="middle">${p.t}${p.n}</text></g>`;
+  });
+  // Ball starts with A1
+  s+=`<circle cx="${pos[0].x}" cy="${pos[0].y-22}" r="8" fill="#fff" stroke="#222" stroke-width="1.5"/><path d="M${pos[0].x-4} ${pos[0].y-24}l4-3 4 3-1 5h-6z" fill="#222"/>`;
+  return s+"</svg>";
+}
+
 </script>
 
 <script>
@@ -700,5 +926,15 @@ initFilters();renderExercises();diagnose();buildSession();
 })();
 </script>
 
+
+<script id="arv-v28-dispatch">
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll("[data-exercise-name]").forEach(el=>{
+    if(/Tercer hombre con pivote cubierto/i.test(el.dataset.exerciseName) && typeof renderThirdManCoveredPivot==="function"){
+      el.innerHTML=renderThirdManCoveredPivot();
+    }
+  });
+});
+</script>
 </body>
 </html>
