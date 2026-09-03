@@ -411,6 +411,26 @@ aside{width:245px!important;min-width:245px!important;position:sticky!important;
 .tactical-svg .arrow.press{stroke:#b64a43;stroke-width:2.4px;stroke-dasharray:6 6}
 </style><style id="arv-v35-css">
 .tactical-svg{display:block;width:100%;height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.tactical-svg .dimension{font-size:13px;font-weight:800;fill:#355e49}.tactical-svg .player text{font-size:9px;font-weight:900;fill:#fff;pointer-events:none}.tactical-svg .player circle{stroke:#fff;stroke-width:3px}.tactical-svg .attacker circle{fill:#168a5b}.tactical-svg .defender circle{fill:#d1495b}.tactical-svg .neutral circle{fill:#d9a928}.tactical-svg .goalkeeper circle{fill:#2f6fa3}.tactical-svg .arrow{fill:none;stroke-linecap:round;stroke-linejoin:round}.tactical-svg .arrow.pass{stroke:#126b4a;stroke-width:2.8px}.tactical-svg .arrow.move{stroke:#126b4a;stroke-width:2.5px;stroke-dasharray:7 6}.tactical-svg .arrow.press{stroke:#b64a43;stroke-width:2.4px;stroke-dasharray:6 6}
+
+/* V38 — zona de gráfico preparada para fotografías validadas por el entrenador */
+.graphic-placeholder{
+  width:100%; min-height:430px; box-sizing:border-box; border:2px dashed #b8c9c0;
+  border-radius:22px; background:linear-gradient(145deg,#f7faf8,#eef4f0);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:34px; color:#426052; position:relative; overflow:hidden;
+}
+.graphic-placeholder::before{content:"";position:absolute;inset:22px;border:1px dashed #cbd8d1;border-radius:17px;pointer-events:none}
+.placeholder-icon{font-size:52px;opacity:.72;margin-bottom:12px;z-index:1}
+.placeholder-title{font-weight:800;letter-spacing:.08em;font-size:14px;z-index:1}
+.placeholder-name{font-size:22px;font-weight:750;color:#153d2d;margin-top:9px;z-index:1;max-width:80%}
+.placeholder-sub{margin-top:9px;font-size:13px;color:#70847a;z-index:1}
+.exercise-visual img.arv-final-graphic{display:block;width:100%;height:auto;max-height:650px;object-fit:contain;border-radius:20px;background:#eef4f0}
+@media(max-width:720px){.graphic-placeholder{min-height:330px;padding:24px}.placeholder-name{font-size:18px}}
+
+/* V39 — placeholders también en la biblioteca */
+.graphic-placeholder-card{min-height:210px!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-sizing:border-box;padding:22px;border:2px dashed #b8c9c0!important;border-radius:16px;background:linear-gradient(145deg,#f7faf8,#eef4f0)!important;color:#426052!important;position:relative;overflow:hidden}
+.graphic-placeholder-card:before{content:"";position:absolute;inset:12px;border:1px dashed #cbd8d1;border-radius:12px;pointer-events:none}
+.placeholder-card-icon,.placeholder-card-title,.placeholder-card-sub{position:relative;z-index:1}.placeholder-card-icon{font-size:34px;opacity:.7;margin-bottom:7px}.placeholder-card-title{font-size:11px;font-weight:850;letter-spacing:.08em}.placeholder-card-sub{font-size:11px;color:#70847a;margin-top:6px}
 </style></head>
 <body>
 <header class="top"><div class="brand">ARV <small>SISTEMA DE METODOLOGÍA · V22</small></div><button onclick="location.reload()">Reiniciar</button></header>
@@ -677,7 +697,11 @@ function svg(i,big=false){
 function renderExercises(){
  const q=(document.getElementById("search").value||"").toLowerCase(),tag=document.getElementById("filterTag").value,age=document.getElementById("filterAge").value,int=document.getElementById("filterIntensity").value;
  const a=E.map((x,i)=>({x,i})).filter(o=>(o.x.join(" ").toLowerCase().includes(q))&&(!tag||o.x[1]===tag)&&(!age||o.x[2]===age)&&(!int||o.x[3]===int));
- document.getElementById("exerciseGrid").innerHTML=a.length?a.map(o=>`<article class="card exercise" onclick="openModal(${o.i})"><div class="diagram">${svg(o.i)}</div><div class="exbody"><div class="tag">${esc(o.x[1])} · ${esc(o.x[2])}</div><h3>${esc(o.x[0])}</h3><p>${esc(o.x[4])}</p><div class="footer"><span class="pill">${esc(o.x[3])}</span><button class="btn secondary" onclick="event.stopPropagation();openModal(${o.i})">Ver ficha →</button></div></div></article>`).join(""):`<div class="card" style="grid-column:1/-1;text-align:center;padding:35px;color:#6b7b74">No hay ejercicios con esos filtros.</div>`;
+ document.getElementById("exerciseGrid").innerHTML=a.length?a.map(o=>`<article class="card exercise" onclick="openModal(${o.i})"><div class="diagram graphic-placeholder-card"><div class="placeholder-card-icon">⚽</div><div class="placeholder-card-title">GRÁFICO PENDIENTE</div><div class="placeholder-card-sub">Se añadirá la imagen validada</div></div><div class="exbody"><div class="tag">${esc(o.x[1])} · ${esc(o.x[2])}</div><h3>${esc(o.x[0])}</h3><p>${esc(o.x[4])}</p><div class="footer"><span class="pill">${esc(o.x[3])}</span><button class="btn secondary" onclick="event.stopPropagation();openModal(${o.i})">Ver ficha →</button></div></div></article>`).join(""):`<div class="card" style="grid-column:1/-1;text-align:center;padding:35px;color:#6b7b74">No hay ejercicios con esos filtros.</div>`;
+}
+function renderGraphicPlaceholder(e){
+ const name=e?.[0]||'Ejercicio';
+ return `<div class="graphic-placeholder"><div class="placeholder-icon">⚽</div><div class="placeholder-title">GRÁFICO PENDIENTE DE VALIDACIÓN</div><div class="placeholder-name">${esc(name)}</div><div class="placeholder-sub">Aquí incorporaremos directamente el gráfico definitivo del ejercicio.</div></div>`;
 }
 function openModal(i){
  const e=E[i];
@@ -691,7 +715,7 @@ function openModal(i){
    <div class="side-section"><strong>Principio</strong><span>${esc(e[1])}</span></div>
    <div class="side-section"><strong>Intensidad</strong><span>${esc(e[3])}</span></div>
    <div class="btn-row"><button class="btn" style="width:100%" onclick="addToSession(${i})">Añadir a sesión +</button></div>`;
- document.getElementById("dVisual").innerHTML=`<div class="bigdiagram">${svg(i,true)}</div><div class="diagram-legend"><span>🟢 Atacante</span><span>🔴 Defensor</span><span>🟡 Comodín</span><span>⚫ Pase</span><span>🔴 Presión</span><span>⚽ Balón inicial</span></div>`;
+ document.getElementById('dVisual').innerHTML = renderGraphicPlaceholder(e);
  document.getElementById("dCopy").innerHTML=detailOverview(e,i);
  go("exerciseDetail");
  window.scrollTo({top:0,behavior:"smooth"});
@@ -796,6 +820,7 @@ function go(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function downloadDiagram(){
+  toast('El gráfico se añadirá cuando esté validado'); return;
   const svgEl=document.querySelector('#dVisual svg'); if(!svgEl)return;
   const blob=new Blob([new XMLSerializer().serializeToString(svgEl)],{type:'image/svg+xml'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ARV-grafico.svg'; a.click(); URL.revokeObjectURL(url);
 }
